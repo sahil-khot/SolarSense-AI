@@ -1,0 +1,16 @@
+# Server Environment Secrets (NEVER COMMIT)
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Uploaded User Documents
+uploads/
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*

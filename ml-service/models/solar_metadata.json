@@ -1,0 +1,17 @@
+{
+  "modelName": "SolarSense Gradient Boosting Solar Forecaster",
+  "version": "1.0.0",
+  "trainedAt": "2026-09-07T13:43:19.914936Z",
+  "trainingSamples": 1920,
+  "validationSamples": 480,
+  "mae": 1173.31,
+  "rmse": 1355.48,
+  "mape": 11.3,
+  "features": [
+    "capacity_kw",
+    "month",
+    "peak_sun_hours",
+    "performance_ratio"
+  ],
+  "datasetSource": "Indian Solar Irradiance and Field Soiling Calibration Dataset"
+}

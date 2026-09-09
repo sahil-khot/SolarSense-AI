@@ -1,0 +1,242 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-page: #F8FAFC;
+    --bg-card: #FFFFFF;
+    --bg-surface: #F8FAFC;
+    --border-color: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-secondary: #64748B;
+    --brand-green: #16A34A;
+    --brand-green-dark: #15803D;
+    --brand-green-light: #ECFDF5;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  /* Clear, comfortable typography */
+  h1 {
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  h4 {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+}
+
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(22, 163, 74, 0.15);
+  color: #0F172A;
+}
+
+/* Standardized Component Layer Utilities */
+@layer components {
+  /* Level 1: Major Hero Banner / Section */
+  .lc-hero-card {
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.08), 0 1px 3px -1px rgba(15, 23, 42, 0.06);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  @media (min-width: 640px) {
+    .lc-hero-card {
+      padding: 32px;
+    }
+  }
+
+  /* Level 2: Standard Clean Light Card */
+  .lc-card {
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 1px 4px -1px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.06);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  @media (min-width: 640px) {
+    .lc-card {
+      padding: 26px;
+    }
+  }
+
+  /* Compact Card */
+  .lc-card-sm {
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  /* Level 3: Secondary Surface / Inset Box */
+  .lc-surface {
+    background-color: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+  }
+
+  /* Standard Input - 16px font to prevent mobile zoom and ensure great desktop readability */
+  .lc-input {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    color: #0F172A;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .lc-input:focus {
+    border-color: #16A34A;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+  }
+
+  /* Standard Select */
+  .lc-select {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    color: #0F172A;
+    font-size: 15px;
+    line-height: 22px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+  }
+  .lc-select:focus {
+    border-color: #16A34A;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+  }
+
+  /* Standard Brand Button */
+  .lc-btn-brand {
+    background-color: #16A34A;
+    color: #FFFFFF;
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 600;
+    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+    box-shadow: 0 1px 2px 0 rgba(22, 163, 74, 0.2);
+  }
+  .lc-btn-brand:hover {
+    background-color: #15803D;
+  }
+  .lc-btn-brand:active {
+    transform: scale(0.99);
+  }
+  .lc-btn-brand:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Standard Secondary Button */
+  .lc-btn-secondary {
+    background-color: #FFFFFF;
+    color: #0F172A;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 600;
+    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .lc-btn-secondary:hover {
+    border-color: #CBD5E1;
+    background-color: #F8FAFC;
+    color: #0F172A;
+  }
+  .lc-btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Destructive Button */
+  .lc-btn-danger {
+    background-color: #FFFFFF;
+    color: #DC2626;
+    border: 1px solid #FEE2E2;
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 600;
+    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .lc-btn-danger:hover {
+    background-color: #FEF2F2;
+    border-color: #FCA5A5;
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "modelName": "SolarSense Gradient Boosting Regressor",
+  "version": "1.0.0",
+  "trainedAt": "2026-09-07T13:43:19.728949Z",
+  "trainingSamples": 456,
+  "validationSamples": 228,
+  "evaluationStrategy": "Time-based walk-forward split (24 months train / 12 months test)",
+  "mae": 241.3,
+  "rmse": 598.04,
+  "mape": 3.76,
+  "comparison": {
+    "Linear Regression (Ridge)": {
+      "mae": 563.81,
+      "rmse": 1009.4,
+      "mape": 40.61
+    },
+    "Random Forest Regressor": {
+      "mae": 242.29,
+      "rmse": 585.07,
+      "mape": 3.87
+    },
+    "Gradient Boosting Regressor": {
+      "mae": 241.3,
+      "rmse": 598.04,
+      "mape": 3.76
+    }
+  },
+  "features": [
+    "baseline_kwh",
+    "month_sin",
+    "month_cos",
+    "user_type_code",
+    "seasonal_multiplier",
+    "is_peak_summer",
+    "is_monsoon"
+  ],
+  "datasetSource": "Calibrated CEA & DISCOM Indian load profile benchmark dataset (no fabricated user data)"
+}

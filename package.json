@@ -1,0 +1,14 @@
+{
+  "name": "solarsense-ai-monorepo",
+  "version": "1.0.0",
+  "description": "SolarSense AI - Intelligent Solar Energy Recommendation and Cost Optimization Platform",
+  "scripts": {
+    "seed": "cd server && node seed/seedData.js",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "ml": "cd ml-service && python app.py"
+  },
+  "keywords": ["solar", "renewable-energy", "ai", "cost-optimization", "mern"],
+  "author": "SolarSense AI Team",
+  "license": "ISC"
+}
