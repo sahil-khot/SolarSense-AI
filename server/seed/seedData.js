@@ -132,7 +132,7 @@ const seed = async () => {
         totalAmount: amount,
         tariff: item.tariff,
         consumerCategory: item.userType === 'residential' ? 'LT-I Domestic' : item.userType === 'farm' ? 'AG-Agriculture' : 'Commercial HT',
-        extractionMethod: 'parsed',
+        extractionMethod: 'pdf_text',
         aiInsights: billAnalysis,
         status: 'analyzed',
         createdAt: new Date(Date.now() - (months.length - i) * 30 * 24 * 60 * 60 * 1000),

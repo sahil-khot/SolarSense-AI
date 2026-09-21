@@ -1,194 +1,202 @@
-# SolarSense AI — Intelligent Solar Energy Recommendation & Cost Optimization Platform
+# ☀️ SolarSense AI — Intelligent Solar Energy Recommendation & Cost Optimization Platform
 
-[![React](https://img.shields.io/badge/Frontend-React%2018%20%7C%20Vite-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![FastAPI](https://img.shields.io/badge/ML%20Service-FastAPI%20%7C%20Python-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![MongoDB](https://img.shields.io/badge/Database-MongoDB%20%7C%20Mongoose-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![TailwindCSS](https://img.shields.io/badge/Styling-Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
+<div align="center">
 
-**SolarSense AI** is an enterprise-grade, full-stack climate-tech platform designed to empower electricity consumers across India—spanning **Residential**, **Agricultural/Farm**, **Small Business**, and **Commercial & Industrial** categories—to evaluate rooftop solar feasibility, determine transparent photovoltaic (PV) system sizing, calculate **PM Surya Ghar: Muft Bijli Yojana** subsidies, simulate alternative system capacities in real time, and project 25-year financial returns.
+[![React 18](https://img.shields.io/badge/Frontend-React%2018%20%7C%20Vite%206-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![FastAPI](https://img.shields.io/badge/ML%20Core-FastAPI%20%7C%20Python-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![MongoDB Atlas](https://img.shields.io/badge/Database-MongoDB%20Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/atlas)
+[![TailwindCSS](https://img.shields.io/badge/Styling-Tailwind%20CSS%203-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Google Gemini](https://img.shields.io/badge/AI%20Advisor-Google%20Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![Deployment](https://img.shields.io/badge/Deploy-Vercel%20Ready-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg?style=for-the-badge)](LICENSE)
 
-Developed as an end-to-end **B.Tech Computer Engineering Capstone Project**.
+<p align="center">
+  <b>An enterprise-grade climate-tech platform empowering consumers across India to simulate rooftop solar feasibility, calculate PM Surya Ghar subsidies, forecast energy yields via Machine Learning, and project 25-year financial returns.</b>
+</p>
 
----
+[Key Features](#-key-features--capabilities) •
+[Architecture](#-system-architecture) •
+[Tech Stack](#-technology-stack) •
+[Quick Start](#-quick-start--installation) •
+[Deployment Guide](#-cloud-deployment-guide) •
+[Engineering Formulas](#-mathematical-engineering-formulas) •
+[API Reference](#-api-reference)
 
-## 📑 Table of Contents
-
-- [Key Features & Capabilities](#-key-features--capabilities)
-- [System Architecture](#-system-architecture)
-- [Technology Stack](#-technology-stack)
-- [Project Directory Structure](#-project-directory-structure)
-- [Quick Start & Installation](#-quick-start--installation)
-  - [Prerequisites](#prerequisites)
-  - [Environment Configuration](#environment-configuration)
-  - [Database Seeding](#database-seeding)
-  - [Starting the Services](#starting-the-services)
-- [Demo Credentials](#-demo-credentials)
-- [Mathematical Engineering Formulas](#-mathematical-engineering-formulas)
-- [API Reference](#-api-reference)
-  - [Express REST Endpoints (Port 5000)](#express-rest-endpoints-port-5000)
-  - [FastAPI ML Microservice Endpoints (Port 8000)](#fastapi-ml-microservice-endpoints-port-8000)
-- [Role-Based Access Control (RBAC)](#-role-based-access-control-rbac)
-- [Design System & UI Guidelines](#-design-system--ui-guidelines)
-- [Engineering & Regulatory Disclaimer](#-engineering--regulatory-disclaimer)
+</div>
 
 ---
 
-## ☀ Key Features & Capabilities
+## 📖 Executive Summary
 
-### 1. Interactive What-If Solar Simulator
-- **Dynamic Capacity Sizing:** Users can freely explore system sizes from **1.0 kW to 15.0 kW** using an interactive slider (0.5 kW increments) or one-click preset chips (**1, 2, 3, 5, 7, 10 kW**).
-- **Zero-Lag Calculation:** Instantly computes annual generation (kWh), net investment after PM Surya Ghar subsidy, annual savings, payback period, and bill reduction percentage without page reloads or calculate buttons.
-- **Recommended vs. What-If Comparison:** Contrasts the user's deterministic sizing against their hypothetical what-if choice with plain-language, non-judgmental trade-off explanations.
-- **Transparent Assumptions:** Expandable drawer breaking down peak sun hours (PSH), 78% performance ratio, panel efficiency, and central subsidy tiers.
+Accelerating rooftop solar adoption across emerging economies requires solving two major bottlenecks: **opaque technical sizing** and **complex government subsidy schemes**. 
 
-### 2. Consumer-Tailored Solar Feasibility Engine
-- **Residential:** Optimizes for slab tariffs, PM Surya Ghar DBT subsidies (up to ₹78,000), and maximum household bill reduction.
-- **Agricultural / Farm:** Aligns diurnal agricultural pumping schedules with peak solar irradiation curves.
-- **Small Business:** Models daytime commercial hours to maximize direct self-consumption (~90%).
-- **Commercial & Industrial (C&I):** Incorporates accelerated depreciation (40%), demand charge mitigation, and corporate ESG decarbonization.
+**SolarSense AI** bridges this information asymmetry for Indian electricity consumers across four distinct sectors:
+- 🏡 **Residential Consumers** (optimizing for slab tariffs, PM Surya Ghar DBT subsidies up to ₹78,000, and net-metering).
+- 🌾 **Agricultural & Farms** (aligning day-time irrigation pumping curves with peak solar generation).
+- 🏪 **Small Businesses & Retail** (maximizing daytime commercial self-consumption up to 90%).
+- 🏭 **Commercial & Industrial (C&I)** (factoring accelerated depreciation, peak demand mitigation, and corporate ESG compliance).
 
-### 3. AI Bill Diagnostic & Ingestion Engine
-- **Multiformat Bill Upload:** Supports PDF, JPEG, and PNG electricity bills as well as manual entry.
-- **Automated Parameter Extraction:** Extracts units consumed (kWh), total amount (₹), tariff rate, billing period, sanctioned load, and DISCOM identifier.
-- **Consumption Anomaly Detection:** Flags unseasonal spikes, meter irregularities, and abnormal month-on-month consumption variance.
+The platform couples **deterministic photovoltaic physics**, **Machine Learning forecasting models (Gradient Boosting & Time-Series)**, and **Google Gemini Multimodal AI** with a high-performance modern web interface.
 
-### 4. 5-Tier Comparative Optimization Matrix
-- Evaluates 5 system sizes side-by-side rather than forcing a single rigid recommendation:
-  1. *Conservative / Budget-Optimized*
-  2. *Balanced / Recommended*
-  3. *High-Offset / Net-Zero Target*
-  4. *Future-Proof / EV-Ready*
-  5. *Maximum Roof Capacity*
+---
 
-### 5. Solar Manufacturers & EPC Directory
-- **Verified Brands:** Pre-loaded with top Tier-1 ALMM-listed manufacturers and turnkey installers (Tata Power Solar, Waaree Energies, Adani Solar, Premier Energies, Vikram Solar, Loom Solar).
-- **Interactive Multi-Parameter Comparison:** Side-by-side comparison of cell technologies (Mono PERC vs. TOPCon vs. Bifacial), warranties, turnkey prices/kW, and DISCOM net-metering support.
-- **Visual Differentiation:** Distinct surface elevation (`#CBD5E1` borders, soft visible shadows) with subtle spotlighting for top recommendations.
+## ⚡ Key Features & Capabilities
 
-### 6. AI Solar Advisor & Chat
-- Conversational energy assistant (`/chat`) delivering grounded guidance on net-metering regulations, PM Surya Ghar portal procedures, inverter choices (String vs. Microinverters), battery backup storage, and seasonal maintenance.
+### 1. 🎛️ Interactive What-If Solar Simulator
+- **Continuous Capacity Sizing:** Adjust capacity freely from **1.0 kW to 15.0 kW** via an interactive slider or instant preset chips (**1, 2, 3, 5, 7, 10 kW**).
+- **Reactive Instant Recalculation:** Calculates annual generation (kWh), capital outlay, PM Surya Ghar central subsidy, net payback period, and monthly bill reduction in real time.
+- **Recommended vs. What-If Comparison:** Side-by-side trade-off matrix highlighting differences in roof area utilization, upfront cost, and self-sufficiency.
+- **Transparent Engineering Parameters:** Expandable drawer displaying underlying assumptions: Peak Sun Hours (4.8 PSH), system derate/performance ratio (78%), and module degradation rates (0.5%/year).
 
-### 7. High-Resolution Audit Reports
-- Client-side instantaneous PDF audit report generation via **jsPDF** and **html2canvas**, complete with consumption charts, financial payback timelines, environmental CO2 offsets, and engineering disclaimers.
+### 2. 📄 Intelligent Bill Diagnostic & Ingestion Engine
+- **Multiformat Bill Upload:** Direct ingestion of PDF, PNG, JPG, and WebP electricity bills issued by Indian DISCOMs (MSEDCL, BESCOM, Tata Power, Adani Electricity, UPPCL, TANGEDCO, etc.).
+- **Hybrid Extraction Pipeline:** Combines deterministic text parsing (`pdf-parse`), local Optical Character Recognition (`Tesseract.js`), and fallback to **Google Gemini Multimodal AI** for complex scanned bills.
+- **Security & Integrity:** File magic bytes validation preventing malicious file uploads masquerading as PDFs/images.
+- **Anomaly Detection:** Machine learning z-score and statistical variance flagging unseasonal spikes, meter roll-overs, and abnormal billing surges.
 
-### 8. Comprehensive Administration Portal
-- Dedicated admin workspace (`/admin`) for system monitoring, user account governance, audit report logs, regional solar adoption analytics, and real-time adjustment of subsidy slabs and base system costs.
+### 3. 📊 5-Tier Comparative Optimization Matrix
+SolarSense AI avoids one-size-fits-all recommendations by generating 5 tailored sizing tiers:
+1. **Conservative / Budget-Optimized:** Minimum capital expenditure targeting essential base loads.
+2. **Balanced / Recommended:** Optimized for maximum tariff offset and fastest financial payback.
+3. **High-Offset / Net-Zero Target:** Covers 95–100% of daytime electricity consumption.
+4. **Future-Proof / EV-Ready:** Oversized by 25–40% to account for future electric vehicle charging or heat pump additions.
+5. **Maximum Roof Capacity:** Physical ceiling based on net usable shadow-free rooftop area.
+
+### 4. 🏢 Tier-1 Solar Manufacturers & EPC Directory
+- **ALMM-Compliant Brands:** Pre-populated profiles for premier manufacturers and installers (Tata Power Solar, Waaree Energies, Adani Solar, Premier Energies, Vikram Solar, Loom Solar).
+- **Multi-Parameter Comparison:** Compare cell technologies (Mono PERC vs. TOPCon vs. Bifacial), degradation warranties (25–30 years), turnkey price per kW, and inverter efficiencies.
+- **Smart Scoring & Badging:** Independent engineering scoring based on efficiency, tier ranking, and regional support.
+
+### 5. 🤖 Grounded AI Solar Advisor (`/chat`)
+- Conversational assistant powered by **Google Gemini 2.5 Flash**.
+- Domain-restricted prompt engineering to address net-metering policies, DISCOM application procedures, string vs. microinverter trade-offs, battery backup sizing, and maintenance best practices.
+
+### 6. 📑 Instant Audit Report Generation
+- Client-side instantaneous PDF export generated via `jsPDF` and `html2canvas`.
+- Generates executive-ready feasibility reports including 25-year cash-flow charts, CO₂ emission offsets, tree plantation equivalencies, and engineering disclaimers.
+
+### 7. 🛡️ Enterprise Administration Portal (`/admin`)
+- Role-based governance protecting sensitive financial and configuration parameters.
+- Platform analytics: total onboarded users, total kW evaluated, estimated lifetime carbon offsets.
+- Dynamic control over base cost/kW, regional irradiation factors, and central subsidy tiers without code redeployments.
 
 ---
 
 ## 🏛 System Architecture
 
-```
-                                 ┌─────────────────────────────────┐
-                                 │     React 18 + Vite Client      │
-                                 │   Tailwind CSS  •  Recharts     │
-                                 │     (Runs on Port 5173)         │
-                                 └────────────────┬────────────────┘
-                                                  │
-                                                  │ HTTP / REST (Bearer JWT)
-                                                  ▼
-                                 ┌─────────────────────────────────┐
-                                 │     Node.js + Express API       │
-                                 │   Auth, Multer, Sizing Engine   │
-                                 │     (Runs on Port 5000)         │
-                                 └────────┬──────────────┬─────────┘
-                                          │              │
-                   Mongoose ODM / TCP     │              │ HTTP Internal API
-                                          ▼              ▼
-┌───────────────────────────────────────────┐   ┌───────────────────────────────────┐
-│              MongoDB Database             │   │       Python FastAPI ML Core      │
-│  • Users & Profiles      • Bills          │   │      scikit-learn  •  NumPy       │
-│  • Solar Assessments     • Recommendations│   │       (Runs on Port 8000)         │
-│  • Reports               • System Settings│   │ • 12-Month Consumption Forecast   │
-│  • Solar Companies Directory              │   │ • Solar Yield Estimation          │
-└───────────────────────────────────────────┘   │ • Anomaly Detection               │
-                                                └───────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph ClientLayer ["Client Layer (Port 5173 / Vercel Edge)"]
+        UI["React 18 + Vite SPA"]
+        Simulator["Interactive What-If Simulator"]
+        Charts["Recharts Analytics & 25-Yr Projection"]
+        PDF["Client-Side PDF Generator (jsPDF)"]
+        UI --> Simulator
+        UI --> Charts
+        UI --> PDF
+    end
+
+    subgraph APILayer ["Backend REST API (Port 5000 / Serverless)"]
+        Express["Express.js Server Engine"]
+        AuthMiddleware["JWT & RBAC Middleware"]
+        BillEngine["Multer + OCR / Gemini Multimodal Parser"]
+        SizingEngine["Deterministic Photovoltaic Sizing Engine"]
+        SubsidyCalc["PM Surya Ghar Subsidy Calculator"]
+        Express --> AuthMiddleware
+        Express --> BillEngine
+        Express --> SizingEngine
+        Express --> SubsidyCalc
+    end
+
+    subgraph MLLayer ["Machine Learning Core (Port 8000)"]
+        FastAPI["FastAPI Microservice"]
+        YieldModel["Solar Yield Forecaster (GBR)"]
+        ConsumpModel["12-Month Consumption Predictor"]
+        AnomalyDet["Billing Anomaly Detector (z-score/isolation)"]
+        FastAPI --> YieldModel
+        FastAPI --> ConsumpModel
+        FastAPI --> AnomalyDet
+    end
+
+    subgraph DataLayer ["Cloud Persistence Layer"]
+        Atlas[("MongoDB Atlas Cloud Cluster")]
+        Users[(Users & RBAC)]
+        Bills[(Bills & OCR Metadata)]
+        Assessments[(Feasibility Assessments)]
+        Settings[(System & Subsidy Slabs)]
+        Atlas --> Users
+        Atlas --> Bills
+        Atlas --> Assessments
+        Atlas --> Settings
+    end
+
+    ClientLayer -- "HTTPS / JSON (JWT)" --> APILayer
+    APILayer -- "Mongoose ODM (Cached Pool)" --> DataLayer
+    APILayer -- "Internal REST (AI Fallback)" --> MLLayer
 ```
 
 ---
 
 ## ⚡ Technology Stack
 
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | React 18, Vite 6, Tailwind CSS, React Router v6, Recharts, Lucide Icons, jsPDF, html2canvas, Axios |
-| **Backend API** | Node.js (v20+), Express.js, Mongoose 8, JWT, bcryptjs, Multer, pdf-parse, cors, dotenv |
-| **Machine Learning** | Python 3.10+, FastAPI, Uvicorn, scikit-learn, NumPy, SciPy, Pydantic |
-| **Database** | MongoDB 6.0+ (Community or Atlas) |
-| **Design Tokens** | `#F8FAFC` (Canvas), `#FFFFFF` (Cards), `#CBD5E1` (Borders), `#16A34A` (SolarSense Emerald) |
+| Layer | Technologies | Purpose |
+| :--- | :--- | :--- |
+| **Frontend** | React 18, Vite 6, Tailwind CSS 3 | Ultra-fast responsive user interface |
+| **Routing & State** | React Router v6, Context API | Client-side routing, Auth & Admin state |
+| **Visualization** | Recharts, Lucide React | Interactive payback, cashflow & solar generation charts |
+| **Document Export**| jsPDF, html2canvas | Instant client-side PDF solar audit reports |
+| **Backend REST** | Node.js (v20+), Express.js | Core business logic, sizing math, and API routes |
+| **Database** | MongoDB Atlas / Mongoose 8 | Managed cloud NoSQL database with connection caching |
+| **ML Microservice**| Python 3.10+, FastAPI, Uvicorn | Consumption forecasting, yield prediction, and anomaly detection |
+| **Machine Learning**| scikit-learn, NumPy, SciPy | Gradient Boosting Regressors, polynomial feature pipelines |
+| **OCR & AI Ingestion**| Tesseract.js, pdf-parse, Google Gemini | Multimodal bill extraction & conversational solar advisory |
+| **Security & Auth** | JWT, bcryptjs, Helmet, Rate Limiting | Industrial-strength defense against brute-force & abuse |
 
 ---
 
 ## 📂 Project Directory Structure
 
-```
+```text
 SolarSense AI/
-├── package.json                   # Root monorepo workspace & launcher scripts
-├── .gitignore                     # Git tracking exclusions
+├── package.json                   # Root monorepo workspace & start scripts
+├── vercel.json                    # Vercel deployment routing & serverless rules
 ├── README.md                      # Comprehensive project documentation
 │
 ├── client/                        # React 18 + Vite Frontend Application
 │   ├── index.html                 # HTML5 document shell & SEO meta tags
-│   ├── vite.config.js             # Vite configuration & server proxies
-│   ├── tailwind.config.js         # Tailwind design tokens & font definitions
+│   ├── vite.config.js             # Vite configuration & dev server proxy
+│   ├── tailwind.config.js         # Design tokens, color palette, typography
 │   └── src/
-│       ├── index.css              # Global styles, .lc-card elevation utilities
-│       ├── App.jsx                # Route declarations & role guards
+│       ├── App.jsx                # Route definitions & RBAC guards
 │       ├── context/               # AuthContext & AdminAuthContext
-│       ├── services/              # API clients (auth, bill, solar, company, etc.)
+│       ├── services/              # API clients (auth, bill, solar, company, chat)
 │       ├── utils/
-│       │   ├── solarSimulatorEngine.js # PM Surya Ghar subsidy & what-if math
-│       │   ├── formatters.js      # Currency (INR) and kW/kWh formatters
-│       │   └── pdfExport.js       # Client-side PDF audit report generator
-│       ├── components/
-│       │   ├── common/            # Navbar, Sidebar, Footer, Modal, StatCard
-│       │   ├── solar/             # WhatIfSolarSimulator, ComparisonCard, etc.
-│       │   ├── bill/              # BillUploadZone, BillInsightsCard
-│       │   ├── charts/            # SavingsChart, GenerationChart, PaybackChart
-│       │   └── admin/             # AdminSidebar, AdminHeader, MetricsCard
-│       └── pages/
-│           ├── public/            # Landing, HowItWorks, Solutions, Subsidies, About, Login
-│           ├── user/              # Dashboard, Onboarding, BillAnalysis, Recommendation,
-│           │                      # CostAnalysis, Companies, CompanyComparison, Reports, Chat
-│           └── admin/             # AdminDashboard, Users, Reports, Analytics, Settings
+│       │   ├── solarSimulatorEngine.js # Zero-lag What-If mathematical model
+│       │   ├── formatters.js      # Indian Rupee (₹) & kW/kWh numeric formatters
+│       │   └── pdfExport.js       # PDF audit report generator
+│       ├── components/            # Reusable UI component library
+│       └── pages/                 # Public, User Portal, and Admin Workspace views
 │
 ├── server/                        # Node.js + Express REST Backend
-│   ├── server.js                  # Express bootstrap, CORS, & error handlers
+│   ├── server.js                  # Express bootstrap, CORS, & security headers
 │   ├── config/
-│   │   ├── db.js                  # MongoDB connection with retry logic
-│   │   └── constants.js           # Solar constants, subsidy slabs, default rates
-│   ├── models/
-│   │   ├── User.js                # Users with hashed passwords & roles
-│   │   ├── Bill.js                # Electricity bills, OCR metadata, field confidences
-│   │   ├── SolarAssessment.js     # User inputs & mathematical sizing outputs
-│   │   ├── Recommendation.js      # 5-tier comparative optimization matrix
-│   │   ├── Company.js             # Solar manufacturers & EPC evaluation scores
-│   │   ├── Report.js              # Audit report logs & status
-│   │   └── SystemSetting.js       # Global dynamic admin configuration
-│   ├── middleware/
-│   │   ├── auth.js                # User JWT verification
-│   │   ├── adminAuth.js           # Strict administrator role check
-│   │   └── upload.js              # Multer file ingestion (PDF, PNG, JPG)
-│   ├── controllers/               # Route business logic
-│   ├── routes/                    # Express route declarations
-│   ├── utils/
-│   │   ├── solarCalculations.js   # Deterministic solar physics formulas
-│   │   └── billParser.js          # Heuristic text & regex bill parser
-│   ├── seed/
-│   │   └── seedData.js            # Initializer script for admin, demo users, companies
-│   └── uploads/                   # Staged upload directory
+│   │   ├── db.js                  # MongoDB Atlas connection with serverless pool caching
+│   │   └── constants.js           # Physical solar constants, DISCOM rates, subsidy tiers
+│   ├── models/                    # Mongoose Schemas (User, Bill, SolarAssessment, Report, etc.)
+│   ├── middleware/                # JWT verification, Admin guard, Multer file upload
+│   ├── controllers/               # Route logic (Auth, Bills, Feasibility, Admin)
+│   ├── routes/                    # Express REST route declarations
+│   ├── ai/                        # AI orchestrator & Gemini API integration
+│   ├── utils/                     # Solar calculations & heuristic bill parser
+│   └── seed/                      # Initializer script for Admin, Demo Accounts & Slabs
 │
 └── ml-service/                    # Python FastAPI Machine Learning Microservice
-    ├── app.py                     # FastAPI application & API endpoints
-    ├── requirements.txt           # Python dependencies
-    ├── inference/
-    │   └── predictor.py           # Model inference engine (yield, consumption, anomalies)
-    ├── training/
-    │   └── train_models.py        # Model training & synthetic data pipelines
-    ├── preprocessing/             # Feature transformers & scalers
-    └── models/                    # Serialized model binaries (.joblib / .pkl)
+    ├── app.py                     # FastAPI server & route handlers
+    ├── requirements.txt           # Python dependency specifications
+    ├── inference/predictor.py     # Pre-trained model loading & inference pipeline
+    ├── training/train_models.py   # Model training & synthetic data pipelines
+    └── models/                    # Serialized model binaries (.pkl / .json)
 ```
 
 ---
@@ -196,219 +204,214 @@ SolarSense AI/
 ## 🚀 Quick Start & Installation
 
 ### Prerequisites
-- **Node.js**: v18.0.0 or higher ([Download Node.js](https://nodejs.org/))
-- **Python**: v3.10 or higher ([Download Python](https://python.org/))
-- **MongoDB**: Active instance running locally on `mongodb://127.0.0.1:27017` or a MongoDB Atlas URI
+- **Node.js**: v18.0.0 or higher (`node -v`)
+- **Python**: v3.10 or higher (`python --version`)
+- **MongoDB**: Active MongoDB Atlas cluster or local instance (`mongodb://127.0.0.1:27017`)
 
 ---
 
-### Environment Configuration
+### 1. Clone & Configure Environment
 
-#### 1. Backend (`server/.env`)
-Create `server/.env`:
+Clone the repository and prepare your environment files:
+
+#### Backend Environment (`server/.env`)
 ```env
 PORT=5000
 NODE_ENV=development
-MONGODB_URI=mongodb://127.0.0.1:27017/solarsense_ai
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxx.mongodb.net/solarsense_ai?retryWrites=true&w=majority
 JWT_SECRET=solarsense_super_secret_jwt_key_2026_btech_project
 ADMIN_REGISTRATION_SECRET=solar_admin_secret_passphrase_2026
-CLIENT_URL=http://localhost:5173
-AI_SERVICE_URL=http://localhost:8000
+AI_SERVICE_URL=http://127.0.0.1:8000
+GEMINI_API_KEY=your_google_gemini_api_key
+GEMINI_MODEL=gemini-2.5-flash
 ```
 
-#### 2. ML Service (`ml-service/.env` or defaults)
+#### Frontend Environment (`client/.env`)
 ```env
-PORT=8000
-ENVIRONMENT=development
-ML_ADMIN_SECRET=solar_admin_secret_passphrase_2026
-ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5000
+VITE_GOOGLE_CLIENT_ID=your_optional_google_oauth_client_id
 ```
 
 ---
 
-### Database Seeding
-Populate the database with administrator accounts, Tier-1 solar companies, and demo consumer accounts:
+### 2. Install Dependencies & Seed Database
 
 ```bash
+# 1. Install root dependencies
+npm install
+
+# 2. Install server dependencies & seed MongoDB
 cd server
 npm install
 npm run seed
+
+# 3. Install client dependencies
+cd ../client
+npm install
 ```
 
 ---
 
-### Starting the Services
+### 3. Launch Services
 
-You can start each service in its own terminal or use the root scripts:
+You can launch all services using the root scripts:
 
-#### Option A: From the Root Directory
+| Service | Command | URL |
+| :--- | :--- | :--- |
+| **Express Backend** | `npm run server` | `http://localhost:5000` |
+| **React Frontend** | `npm run client` | `http://localhost:5173` |
+| **Python ML Service** | `npm run ml` | `http://localhost:8000` |
 
-| Terminal | Service | Command | URL |
-| :--- | :--- | :--- | :--- |
-| **Terminal 1** | Express Backend | `npm run server` | `http://localhost:5000` |
-| **Terminal 2** | React Client | `npm run client` | `http://localhost:5173` |
-| **Terminal 3** | Python ML Service | `npm run ml` | `http://localhost:8000` |
-
-#### Option B: Direct Commands
-
-**Terminal 1 — Backend API:**
-```bash
-cd server
-npm run dev
-```
-
-**Terminal 2 — Frontend Client:**
-```bash
-cd client
-npm run dev
-```
-
-**Terminal 3 — Python ML Service:**
-```bash
-cd ml-service
-# Optional: create & activate virtualenv
-python -m venv venv
-# Windows: venv\Scripts\activate | Unix: source venv/bin/activate
-pip install -r requirements.txt
-python app.py
-```
-
-Once started, open **`http://localhost:5173`** in your browser.
+Once started, navigate to **`http://localhost:5173`** in your browser.
 
 ---
 
-## 🔑 Demo Credentials
+## 🔑 Pre-Seeded Demo Credentials
 
-All seed accounts share the same password format:
+The database comes pre-seeded with test accounts representing real-world consumer profiles:
 
-| Account Type | Email | Password | Baseline Profile |
+| Role | Email | Password | Baseline Profile |
 | :--- | :--- | :--- | :--- |
-| **System Administrator** | `admin@solarsense.ai` | `Admin@12345` | Global admin access |
-| **Residential Consumer** | `rahul.residential@solarsense.ai` | `User@12345` | 380 kWh/month, 3 kW rooftop |
-| **Agricultural / Farm** | `ramesh.farm@solarsense.ai` | `User@12345` | 1,850 kWh/month, 10 kW pump |
-| **Small Business** | `priya.business@solarsense.ai` | `User@12345` | 1,250 kWh/month, 8 kW shop |
-| **Commercial & Industrial** | `arjun.commercial@solarsense.ai` | `User@12345` | 16,500 kWh/month, 100 kW plant |
+| **System Admin** | `admin@solarsense.ai` | `Admin@12345` | Complete administrative authority |
+| **Residential User** | `rahul.residential@solarsense.ai` | `User@12345` | 380 kWh/mo, 650 sq ft roof, Slab tariff |
+| **Agricultural / Farm** | `ramesh.farm@solarsense.ai` | `User@12345` | 1,850 kWh/mo, 3,500 sq ft, Day irrigation |
+| **Small Business** | `priya.business@solarsense.ai` | `User@12345` | 1,250 kWh/mo, 1,400 sq ft, 90% daytime load |
+| **Commercial & Industrial** | `arjun.commercial@solarsense.ai` | `User@12345` | 16,500 kWh/mo, 18,000 sq ft, HT tariff |
+
+---
+
+## 🌐 Cloud Deployment Guide
+
+### Deploying to Vercel (Monorepo Setup)
+
+SolarSense AI is pre-configured for seamless deployment to **Vercel**:
+
+1. **Push your repository** to GitHub.
+2. In [Vercel Dashboard](https://vercel.com), click **Add New Project** and select your repo.
+3. Configure the following **Environment Variables** in Vercel:
+
+```env
+NODE_ENV=production
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster0.xxxx.mongodb.net/solarsense_ai?retryWrites=true&w=majority
+JWT_SECRET=your_production_secret
+ADMIN_REGISTRATION_SECRET=your_admin_secret
+GEMINI_API_KEY=your_gemini_api_key
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+4. Click **Deploy**. Vercel will build the Vite frontend into static edge assets and mount the Express API as a serverless backend function.
+
+> [!TIP]
+> **Zero-Configuration Fallback:** If the Python ML microservice is not deployed separately to Render or Railway, SolarSense AI's built-in calculation engine seamlessly handles all solar sizing, PM Surya Ghar subsidy tiers, and 25-year cash-flow forecasting in Node.js.
 
 ---
 
 ## 🧮 Mathematical Engineering Formulas
 
-All calculations in SolarSense AI use published engineering standards:
+All engineering and financial equations implemented in the platform comply with **MNRE (Ministry of New and Renewable Energy)** standards:
 
-### 1. Daily Average Consumption
-$$\text{Daily Consumption (kWh)} = \frac{\text{Monthly Consumption (kWh)}}{30}$$
+### 1. Daily Average Electricity Consumption
+$$\text{Daily Consumption } (E_{\text{daily}}) = \frac{\text{Monthly Consumption (kWh)}}{30}$$
 
-### 2. Sizing Recommendation
-$$\text{System Capacity (kW)} = \frac{\text{Daily Consumption (kWh)}}{\text{Peak Sun Hours (4.8)} \times \text{Performance Ratio (0.78)}}$$
+### 2. Photovoltaic Capacity Requirement (kWp)
+$$P_{\text{system}} = \frac{E_{\text{daily}}}{\text{PSH} \times \text{PR}}$$
+*Where $\text{PSH} = 4.8\text{ hours/day}$ (Indian national average) and $\text{PR} = 0.78$ (Performance Ratio accounting for inverter clipping, cabling, soiling, and temperature derating).*
 
-### 3. Estimated Annual Generation
-$$\text{Annual Generation (kWh)} = \text{Capacity (kW)} \times \text{Peak Sun Hours (4.8)} \times 365 \times \text{Performance Ratio (0.78)}$$
+### 3. Expected Annual Generation (kWh)
+$$E_{\text{annual}} = P_{\text{system}} \times \text{PSH} \times 365 \times \text{PR}$$
 
 ### 4. PM Surya Ghar: Muft Bijli Yojana Central Subsidy
 $$\text{Subsidy (₹)} = \begin{cases} 
-\text{Capacity} \times ₹30,000 & \text{if } \text{Capacity} \le 1\text{ kW} \\
-₹60,000 & \text{if } 1 < \text{Capacity} \le 2\text{ kW} \\
-₹78,000 & \text{if } \text{Capacity} \ge 3\text{ kW} \\
-₹0 & \text{if Non-Residential (C\&I / Commercial)}
+P_{\text{system}} \times ₹30,000 & \text{for } P \le 1\text{ kW} \\
+₹60,000 & \text{for } 1 < P \le 2\text{ kW} \\
+₹78,000 & \text{for } P \ge 3\text{ kW} \\
+₹0 & \text{for Commercial, Industrial \& Non-Residential}
 \end{cases}$$
 
-### 5. Net Capital Outlay
-$$\text{Net Investment (₹)} = (\text{Capacity (kW)} \times \text{Cost per kW}) - \text{Subsidy (₹)}$$
+### 5. Net Capital Investment
+$$\text{Net Investment (₹)} = (P_{\text{system}} \times \text{Turnkey Cost/kW}) - \text{Subsidy (₹)}$$
 
 ### 6. Simple Payback Period
-$$\text{Payback (Years)} = \frac{\text{Net Investment (₹)}}{\text{Annual Electricity Cost Savings (₹)}}$$
+$$\text{Payback (Years)} = \frac{\text{Net Capital Investment (₹)}}{\text{Annual Tariff Savings (₹)}}$$
 
-### 7. Module Quantity (540W Mono PERC)
-$$\text{Number of Panels} = \left\lceil \frac{\text{Capacity (kW)} \times 1000}{540\text{ W}} \right\rceil$$
+### 7. Physical Rooftop Space Sizing
+$$\text{Area Required (sq ft)} = P_{\text{system}} \times 85\text{ sq ft/kW}$$
+$$\text{Panel Count (540W Mono PERC)} = \left\lceil \frac{P_{\text{system}} \times 1000}{540\text{ W}} \right\rceil$$
 
-### 8. Rooftop Area Requirement
-$$\text{Area Required (sq ft)} = \text{Capacity (kW)} \times 85\text{ sq ft/kW}$$
+### 8. Lifetime Environmental Carbon Offset
+$$\text{Annual }\text{CO}_2\text{ Mitigated (kg)} = E_{\text{annual}} \times 0.82\text{ kg CO}_2/\text{kWh}$$
+$$\text{Tree Plantation Equivalent} = \left\lfloor \frac{\text{Lifetime }\text{CO}_2\text{ Mitigated}}{20\text{ kg CO}_2/\text{tree/yr}} \right\rfloor$$
 
 ---
 
 ## 📡 API Reference
 
-### Express REST Endpoints (Port 5000)
+### Express REST API (`http://localhost:5000/api`)
 
-#### Authentication & Profile (`/api/auth`, `/api/users`)
-- `POST /api/auth/register` — Register new consumer account
-- `POST /api/auth/login` — Authenticate user and receive JWT
-- `GET /api/auth/me` — Retrieve current authenticated user profile
-- `POST /api/auth/forgot-password` — Password recovery dispatch
-- `PUT /api/users/profile` — Update category, address, and tariff details
+#### Authentication & User Management
+| Method | Endpoint | Description | Protection |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Register new consumer account | Public |
+| `POST` | `/api/auth/login` | Authenticate user and issue JWT | Public |
+| `GET` | `/api/auth/me` | Retrieve authenticated profile | Bearer JWT |
+| `PUT` | `/api/users/profile` | Update profile, location & tariff details | Bearer JWT |
 
-#### Electricity Bills (`/api/bills`)
-- `POST /api/bills/upload` — Upload PDF/image bill for heuristic extraction
-- `POST /api/bills/manual` — Record manual bill entry
-- `GET /api/bills` — Retrieve user's bill history
-- `GET /api/bills/:id` — Retrieve specific bill analysis and AI insights
-- `DELETE /api/bills/:id` — Remove bill record
+#### Electricity Bill Diagnostics
+| Method | Endpoint | Description | Protection |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/bills/upload` | Ingest bill file (PDF, PNG, JPG) via OCR/Gemini | Bearer JWT |
+| `POST` | `/api/bills/manual` | Manually log bill consumption figures | Bearer JWT |
+| `GET` | `/api/bills` | Fetch user's historical electricity bills | Bearer JWT |
+| `GET` | `/api/bills/:id` | Detailed bill analytics & anomaly insights | Bearer JWT |
+| `DELETE`| `/api/bills/:id` | Remove bill record | Bearer JWT |
 
-#### Solar Sizing & Recommendations (`/api/solar`)
-- `POST /api/solar/assess` — Compute deterministic solar assessment
-- `GET /api/solar/recommendation` — Retrieve 5-tier comparative matrix
-- `GET /api/solar/savings-projection` — 25-year cumulative financial cashflow
+#### Solar Feasibility & Recommendations
+| Method | Endpoint | Description | Protection |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/solar/assess` | Compute sizing metrics & financial projections | Bearer JWT |
+| `GET` | `/api/solar/recommendation` | Fetch 5-tier comparative recommendation matrix | Bearer JWT |
+| `GET` | `/api/solar/savings-projection`| 25-year cumulative financial cash-flow analysis | Bearer JWT |
 
-#### Solar Companies Directory (`/api/companies`)
-- `GET /api/companies` — Retrieve all verified solar manufacturers & installers
-- `GET /api/companies/compare?ids=id1,id2,id3` — Multi-parameter comparison
-- `GET /api/companies/:id` — Individual company profile & rating breakdown
+#### Solar Companies & EPC Directory
+| Method | Endpoint | Description | Protection |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/companies` | List verified ALMM solar manufacturers | Public / Auth |
+| `GET` | `/api/companies/compare?ids=x,y` | Multi-parameter side-by-side comparison | Public / Auth |
+| `GET` | `/api/companies/:id` | Detailed manufacturer specifications & ratings | Public / Auth |
 
-#### AI Energy Chatbot (`/api/chat`)
-- `POST /api/chat/message` — Submit query to SolarSense AI energy advisor
-
-#### Administration (`/api/admin`) *(Requires `adminProtect`)*
-- `POST /api/admin/login` — Administrator authentication
-- `GET /api/admin/stats` — Platform aggregates (users, capacity, kW installed)
-- `GET /api/admin/users` — User management and status administration
-- `GET /api/admin/settings` — System parameters and subsidy slab configuration
-- `PUT /api/admin/settings` — Update subsidy caps and default cost per kW
-
----
-
-### FastAPI ML Microservice Endpoints (Port 8000)
-
-- `GET /health` — Microservice liveness and dependency status
-- `POST /predict/consumption` — 12-month consumption forecasting based on baseline usage, user category, and seasonal variance
-- `POST /predict/solar` — Machine-learned monthly solar yield prediction curves
-- `POST /predict/anomalies` — Statistical & ML anomaly detection on billing time series
-- `POST /train` — Trigger model retraining on updated regional datasets *(Requires `ML_ADMIN_SECRET`)*
+#### AI Solar Advisor & Administration
+| Method | Endpoint | Description | Protection |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/chat/message` | Submit query to Gemini AI Solar Advisor | Bearer JWT |
+| `POST` | `/api/admin/login` | Administrator authentication | Public |
+| `GET` | `/api/admin/stats` | Platform aggregates (users, capacity, offsets) | Admin JWT |
+| `GET` | `/api/admin/users` | User management & audit directory | Admin JWT |
+| `GET` | `/api/admin/settings`| System constants & subsidy slab configuration | Admin JWT |
+| `PUT` | `/api/admin/settings`| Update live subsidy limits and pricing constants| Admin JWT |
 
 ---
 
 ## 🔒 Role-Based Access Control (RBAC)
 
-| User Role | Entry Point | Accessible Routes | Backend Middleware |
+| User Role | Portal | Accessible Routes | Middleware Guard |
 | :--- | :--- | :--- | :--- |
-| **Public Guest** | `/` | `/`, `/how-it-works`, `/solutions`, `/subsidies`, `/about`, `/login`, `/register` | None (Public) |
-| **Consumer (User)** | `/login` | `/dashboard`, `/onboarding`, `/bill-analysis`, `/solar-recommendation`, `/cost-analysis`, `/companies`, `/company-comparison`, `/reports`, `/chat`, `/profile` | `protect` (JWT Token) |
-| **System Administrator** | `/admin/login` | `/admin/dashboard`, `/admin/users`, `/admin/reports`, `/admin/analytics`, `/admin/settings` | `protect` + `adminProtect` |
-
-Admin endpoints are strictly protected at the database and routing levels. Querying `/api/admin/*` without valid administrator claims results in an immediate `403 Forbidden` response.
-
----
-
-## 🎨 Design System & UI Guidelines
-
-SolarSense AI adheres to a modern, consumer-grade light theme:
-
-- **Canvas Background:** `#F8FAFC` (Slate 50)
-- **Card Surface:** `#FFFFFF` (Pure White) with crisp `#CBD5E1` (Slate 300) boundaries
-- **Card Shadows:** Soft, multi-layered elevation (`box-shadow: 0 1px 4px -1px rgba(15,23,42,0.08), 0 2px 6px -1px rgba(15,23,42,0.06)`)
-- **Primary Brand Accent:** `#16A34A` (SolarSense Emerald)
-- **High-Contrast Text:** `#0F172A` (Slate 900) for headers and `#334155` / `#64748B` for body & metadata
-- **Typography:** Inter / system sans-serif with readable base sizes (titles: 18–22px, body: 14–16px, metadata: 13–14px)
+| **Guest / Public** | `/` | Landing, How It Works, Solutions, Subsidies, About, Login, Register | None |
+| **Consumer (User)**| `/login` | Dashboard, Onboarding, Bill Analysis, Sizing, What-If Simulator, EPCs, Chat, Reports | `protect` (JWT) |
+| **System Admin** | `/admin/login` | Admin Dashboard, User Governance, Report Audits, Analytics, Slabs & Settings | `protect` + `adminProtect` |
 
 ---
 
 ## ⚖ Engineering & Regulatory Disclaimer
 
-> [!NOTE]
-> All solar PV system capacities, generation estimates (kWh), subsidy calculations, and payback durations generated by SolarSense AI are derived from mathematical modeling and regional irradiation averages. Final feasibility requires a physical rooftop structural inspection, shadow analysis, and DISCOM net-metering approval.
+> [!IMPORTANT]
+> System capacities, solar yields, financial payback estimations, and PM Surya Ghar subsidy amounts presented by **SolarSense AI** are computed via mathematical models and historical meteorological averages. Exact system design, shadow losses, and grid interconnectivity require an on-site physical engineering survey and DISCOM net-metering feasibility clearance.
 
 ---
 
-## 👨‍💻 Project Authors & Credits
+## 👨‍💻 Project Authors & Acknowledgements
 
-Developed with passion by the **SolarSense AI Team** as a final-year Computer Engineering capstone project.
-For inquiries, feedback, or collaborations, feel free to open an issue or pull request.
+Developed as an end-to-end **B.Tech Computer Engineering Capstone Project**.
+
+- **Sahil Khot** & The SolarSense AI Engineering Team
+- Dedicated to accelerating clean energy adoption, open climate technology, and India's rooftop solar mission.
+
+For inquiries, support, or contributions, feel free to open an issue or pull request.
