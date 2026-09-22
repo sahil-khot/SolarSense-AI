@@ -2,7 +2,12 @@
   "name": "solarsense-ai-monorepo",
   "version": "1.0.0",
   "description": "SolarSense AI - Intelligent Solar Energy Recommendation and Cost Optimization Platform",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
+    "build": "npm run build --workspace=client",
     "seed": "cd server && node seed/seedData.js",
     "server": "cd server && npm run dev",
     "client": "cd client && npm run dev",

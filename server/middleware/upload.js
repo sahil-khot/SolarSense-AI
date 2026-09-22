@@ -2,10 +2,14 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Ensure secure upload directory exists
-const uploadDir = path.join(__dirname, '../uploads');
+// Ensure secure upload directory exists (use /tmp on Vercel serverless)
+const uploadDir = process.env.VERCEL ? '/tmp' : path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+  try {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  } catch (err) {
+    console.warn('[Upload] Notice: Could not create upload directory:', err.message);
+  }
 }
 
 const storage = multer.diskStorage({

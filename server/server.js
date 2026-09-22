@@ -90,7 +90,12 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`[SolarSense AI Server] Running on http://localhost:${PORT}`);
-  console.log(`[Environment] Mode: ${process.env.NODE_ENV || 'development'}`);
-});
+
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[SolarSense AI Server] Running on http://localhost:${PORT}`);
+    console.log(`[Environment] Mode: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
+
+module.exports = app;
