@@ -30,26 +30,26 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
   };
 
   const content = (
-    <div className="flex flex-col h-full justify-between bg-[#E2E8F0] border-r border-[#CBD5E1] text-light-text p-4">
+    <div className="flex flex-col h-full justify-between bg-[#E2E8F0] border-r border-[#CBD5E1] text-light-text p-3">
       <div>
         {/* Admin Brand */}
-        <div className="flex items-center justify-between px-2 py-2 mb-4 border-b border-[#CBD5E1] pb-4">
-          <div className="flex items-center gap-2.5">
+        <div className="flex items-center justify-between px-2 py-1.5 mb-3 border-b border-[#CBD5E1] pb-3">
+          <div className="flex items-center gap-2">
             <img
               src="/logo.png"
               alt="SolarSense AI"
-              className="w-8 h-8 rounded-full object-contain shrink-0"
+              className="w-7 h-7 rounded-full object-contain shrink-0"
             />
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-light-text text-[17px] tracking-tight">
+                <span className="font-bold text-light-text text-[15px] tracking-tight">
                   SolarSense
                 </span>
-                <span className="text-[14px] font-bold uppercase px-1.5 py-0.5 rounded-btn bg-brand/10 text-brand border border-brand/20">
+                <span className="text-[12px] font-bold uppercase px-1.5 py-0.5 rounded-btn bg-brand/10 text-brand border border-brand/20">
                   ADMIN
                 </span>
               </div>
-              <p className="text-[15px] text-light-muted font-normal">Console</p>
+              <p className="text-[13px] text-light-muted font-normal">Console</p>
             </div>
           </div>
           {setMobileOpen && (
@@ -63,16 +63,16 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
         </div>
 
         {/* Administrator Profile Tag */}
-        <div className="mx-1 mb-4 p-3 rounded-card bg-white border border-[#CBD5E1] shadow-xs">
-          <p className="text-[15px] uppercase font-bold tracking-wider text-brand mb-0.5">
+        <div className="mx-0.5 mb-3 p-2.5 rounded-card bg-white border border-[#CBD5E1] shadow-xs">
+          <p className="text-[13px] uppercase font-bold tracking-wider text-brand mb-0.5">
             Administrator
           </p>
-          <p className="text-[17px] font-bold text-light-text truncate">{adminUser?.name || 'Administrator'}</p>
-          <p className="text-[15px] text-light-muted truncate font-mono mt-0.5">{adminUser?.email || 'admin@solarsense.ai'}</p>
+          <p className="text-[15px] font-bold text-light-text truncate">{adminUser?.name || 'Administrator'}</p>
+          <p className="text-[13px] text-light-muted truncate font-mono mt-0.5">{adminUser?.email || 'admin@solarsense.ai'}</p>
         </div>
 
         {/* Nav Links */}
-        <nav className="space-y-1.5">
+        <nav className="space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -81,14 +81,14 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
                 to={item.path}
                 onClick={() => setMobileOpen && setMobileOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[17px] font-semibold transition-all ${
+                  `flex items-center gap-2.5 px-3 py-2 rounded-xl text-[15px] font-semibold transition-all ${
                     isActive
                       ? 'bg-white text-brand font-bold border border-[#CBD5E1] shadow-xs'
                       : 'text-slate-700 hover:text-slate-900 hover:bg-slate-300/50'
                   }`
                 }
               >
-                <Icon className="w-[18px] h-[18px] shrink-0" />
+                <Icon className="w-[17px] h-[17px] shrink-0" />
                 <span>{item.name}</span>
               </NavLink>
             );
@@ -97,12 +97,12 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
       </div>
 
       {/* Admin Sign Out */}
-      <div className="pt-3 border-t border-[#CBD5E1]">
+      <div className="pt-2 border-t border-[#CBD5E1]">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-[17px] font-semibold text-rose-600 hover:bg-rose-100/60 transition-colors cursor-pointer"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-[15px] font-semibold text-rose-600 hover:bg-rose-100/60 transition-colors cursor-pointer"
         >
-          <LogOut className="w-[18px] h-[18px]" />
+          <LogOut className="w-[17px] h-[17px]" />
           <span>Exit Admin Portal</span>
         </button>
       </div>

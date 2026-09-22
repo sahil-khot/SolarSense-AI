@@ -138,10 +138,10 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
   const badge = getUserTypeBadge(user?.userType);
 
   const renderContent = (collapsed = false) => (
-    <div className="flex flex-col h-full justify-between bg-[#E2E8F0] border-r border-[#CBD5E1] px-3 py-2.5 select-none overflow-hidden">
-      <div className="space-y-2">
+    <div className="flex flex-col h-full justify-between bg-[#E2E8F0] border-r border-[#CBD5E1] px-2.5 py-2 select-none overflow-hidden">
+      <div className="space-y-1.5">
         {/* Brand Header & Toggle */}
-        <div className="flex items-center justify-between pb-2 border-b border-[#CBD5E1]">
+        <div className="flex items-center justify-between pb-1.5 border-b border-[#CBD5E1]">
           <NavLink
             to="/dashboard"
             className="flex items-center transition-opacity hover:opacity-90 overflow-hidden"
@@ -150,17 +150,17 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
               <img
                 src="/logo.png"
                 alt="SolarSense AI"
-                className="w-9 h-9 rounded-full object-contain mx-auto"
+                className="w-8 h-8 rounded-full object-contain mx-auto"
                 title="SolarSense AI"
               />
             ) : (
-              <div className="flex items-center gap-2.5 pl-1">
+              <div className="flex items-center gap-2 pl-1">
                 <img
                   src="/logo.png"
                   alt="SolarSense Logo"
-                  className="w-8 h-8 rounded-full object-contain shrink-0"
+                  className="w-7 h-7 rounded-full object-contain shrink-0"
                 />
-                <span className="font-bold text-[21px] tracking-tight text-slate-900">
+                <span className="font-bold text-[19px] tracking-tight text-slate-900">
                   SolarSense<span className="text-brand ml-0.5">AI</span>
                 </span>
               </div>
@@ -172,7 +172,7 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
             <button
               type="button"
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="hidden md:flex p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-300/60 transition-colors cursor-pointer"
+              className="hidden md:flex p-1 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-300/60 transition-colors cursor-pointer"
               title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
@@ -188,7 +188,7 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="md:hidden p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-300/60"
+                className="md:hidden p-1 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-300/60"
                 aria-label="Close sidebar"
               >
                 <X className="w-4 h-4" />
@@ -200,11 +200,11 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
         {/* User Card */}
         <div
           className={`rounded-xl bg-white border border-[#CBD5E1] shadow-xs transition-all ${
-            collapsed ? 'p-1.5 flex flex-col items-center' : 'p-2.5'
+            collapsed ? 'p-1.5 flex flex-col items-center' : 'p-2'
           }`}
         >
-          <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-2.5'}`}>
-            <div className="w-8 h-8 rounded-full bg-emerald-50 text-brand font-bold text-[16px] flex items-center justify-center border border-emerald-200 shrink-0">
+          <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-2'}`}>
+            <div className="w-7 h-7 rounded-full bg-emerald-50 text-brand font-bold text-[14px] flex items-center justify-center border border-emerald-200 shrink-0">
               {user?.avatar ? (
                 <img
                   key={user.avatar}
@@ -222,17 +222,17 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
 
             {!collapsed && (
               <div className="min-w-0 flex-1">
-                <p className="text-[17px] font-semibold text-slate-900 truncate leading-tight">
+                <p className="text-[15px] font-semibold text-slate-900 truncate leading-tight">
                   {user?.name || 'Consumer'}
                 </p>
-                <p className="text-[14.5px] text-slate-500 truncate mt-0.5">{user?.email}</p>
+                <p className="text-[12.5px] text-slate-500 truncate mt-0.5">{user?.email}</p>
               </div>
             )}
           </div>
 
           {!collapsed && (
-            <div className="mt-1.5 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[13.5px]">
-              <span className="font-semibold px-2 py-0.5 rounded bg-emerald-50 text-brand border border-emerald-200">
+            <div className="mt-1 pt-1 border-t border-slate-100 flex items-center justify-between text-[11.5px]">
+              <span className="font-semibold px-1.5 py-0.5 rounded bg-emerald-50 text-brand border border-emerald-200">
                 {badge?.label || 'Residential'}
               </span>
               <span className="text-slate-400">Active</span>
@@ -241,18 +241,18 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
         </div>
 
         {/* Categorized Navigation */}
-        <nav className="space-y-2 pt-0.5">
+        <nav className="space-y-1 pt-0.5">
           {navSections.map((section, sIdx) => (
-            <div key={section.title} className="space-y-1">
+            <div key={section.title} className="space-y-0.5">
               {!collapsed ? (
-                <p className="text-[12.5px] font-bold uppercase tracking-wider text-slate-500 px-3 pt-1 pb-0.5 leading-none">
+                <p className="text-[10.5px] font-bold uppercase tracking-wider text-slate-500 px-2.5 pt-0.5 pb-0.5 leading-none">
                   {section.title}
                 </p>
               ) : (
-                sIdx > 0 && <div className="h-px bg-[#CBD5E1] my-1 mx-1" />
+                sIdx > 0 && <div className="h-px bg-[#CBD5E1] my-0.5 mx-1" />
               )}
 
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 {section.items.map((item) => {
                   const Icon = item.icon;
                   return (
@@ -263,20 +263,20 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
                       title={collapsed ? item.name : undefined}
                       className={({ isActive }) =>
                         `relative flex items-center ${
-                          collapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2'
-                        } rounded-xl text-[17.5px] transition-all group ${
+                          collapsed ? 'justify-center p-2' : 'gap-2.5 px-2.5 py-1.5'
+                        } rounded-xl text-[15.5px] transition-all group ${
                           isActive
                             ? 'bg-white text-brand font-bold border border-[#CBD5E1] shadow-xs'
                             : 'text-slate-700 hover:text-slate-900 hover:bg-slate-300/50 font-medium'
                         }`
                       }
                     >
-                      <Icon className="w-[18px] h-[18px] shrink-0 transition-transform group-hover:scale-105" />
+                      <Icon className="w-[17px] h-[17px] shrink-0 transition-transform group-hover:scale-105" />
                       {!collapsed && <span className="truncate">{item.name}</span>}
 
                       {/* Tooltip for collapsed desktop view */}
                       {collapsed && (
-                        <span className="absolute left-full ml-2.5 px-2.5 py-1.5 bg-slate-900 text-white text-[15px] font-medium rounded-md shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                        <span className="absolute left-full ml-2.5 px-2 py-1 bg-slate-900 text-white text-[13px] font-medium rounded-md shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                           {item.name}
                         </span>
                       )}
@@ -290,19 +290,19 @@ const Sidebar = ({ mobileOpen, setMobileOpen }) => {
       </div>
 
       {/* Logout Action */}
-      <div className="pt-2 mt-2 border-t border-[#CBD5E1]">
+      <div className="pt-1.5 mt-1 border-t border-[#CBD5E1]">
         <button
           type="button"
           onClick={handleLogout}
           title={collapsed ? 'Log Out' : undefined}
           className={`w-full flex items-center ${
-            collapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2'
-          } rounded-xl text-[17px] font-medium text-rose-600 hover:bg-rose-100/60 hover:text-rose-700 transition-colors cursor-pointer group relative`}
+            collapsed ? 'justify-center p-2' : 'gap-2.5 px-2.5 py-1.5'
+          } rounded-xl text-[15px] font-medium text-rose-600 hover:bg-rose-100/60 hover:text-rose-700 transition-colors cursor-pointer group relative`}
         >
-          <LogOut className="w-[18px] h-[18px] shrink-0" />
+          <LogOut className="w-[17px] h-[17px] shrink-0" />
           {!collapsed && <span>Log Out</span>}
           {collapsed && (
-            <span className="absolute left-full ml-2.5 px-2.5 py-1.5 bg-slate-900 text-white text-[15px] font-medium rounded-md shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+            <span className="absolute left-full ml-2.5 px-2 py-1 bg-slate-900 text-white text-[13px] font-medium rounded-md shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
               Log Out
             </span>
           )}

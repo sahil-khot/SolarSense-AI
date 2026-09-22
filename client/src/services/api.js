@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: '/api',
+  timeout: 45000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -33,10 +34,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message =
-      error.response?.data?.message ||
-      error.message ||
-      'An unexpected network error occurred. Please check your connection.';
+    let message = error.response?.data?.message || error.message;
+    if (error.code === 'ECONNABORTED' || (error.message && error.message.toLowerCase().includes('timeout'))) {
+      message = 'Analysis timed out. Please verify your bill file is clear and try again.';
+    } else if (!message) {
+      message = 'An unexpected network error occurred. Please check your connection.';
+    }
     return Promise.reject(new Error(message));
   }
 );

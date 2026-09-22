@@ -64,7 +64,7 @@ async function extractBillData(filePath, fileMimeType) {
   try {
     let extractedText = '';
 
-    // Step 1: Extract text (PDF or OCR)
+    // Step 1: For PDFs, quickly extract text with pdfParse (<50ms)
     if (fileMimeType === 'application/pdf') {
       try {
         const dataBuffer = fs.readFileSync(filePath);
@@ -73,48 +73,60 @@ async function extractBillData(filePath, fileMimeType) {
         result.rawText = extractedText;
         result.extractionMethod = 'pdf_text';
       } catch (pdfErr) {
-        console.warn('[Bill Parser] PDF parse error:', pdfErr.message);
-      }
-    } else if (fileMimeType.startsWith('image/') && Tesseract) {
-      try {
-        console.log('[Bill Parser] Running OCR on image bill...');
-        const ocrResult = await Tesseract.recognize(filePath, 'eng', {
-          logger: () => {},
-        });
-        extractedText = ocrResult.data.text || '';
-        result.ocrText = extractedText;
-        result.rawText = extractedText;
-        result.extractionMethod = 'ocr';
-      } catch (ocrErr) {
-        console.warn('[Bill Parser] OCR error:', ocrErr.message);
+        console.warn('[Bill Parser] PDF text parse error:', pdfErr.message);
       }
     }
 
-    // Step 2: Multimodal Gemini 3.8 Flash extraction if API key configured
+    // Step 2: High-speed Multimodal Vision & Intelligence via Google Gemini (runs FIRST)
+    // Gemini reads images and PDFs directly with bilingual OCR and returns structured JSON in 1-2s.
     let geminiData = null;
     const apiKey = process.env.GEMINI_API_KEY;
     if (apiKey && apiKey !== 'YOUR_GEMINI_API_KEY_HERE') {
       try {
+        console.log('[Bill Parser] Extracting bill metrics with Gemini Multimodal AI...');
         geminiData = await extractWithGeminiMultimodal(filePath, fileMimeType, extractedText);
-        if (geminiData) {
-          result.extractionMethod = result.extractionMethod === 'ocr' ? 'hybrid' : 'gemini_multimodal';
+        if (geminiData && (geminiData.unitsConsumed?.value || geminiData.totalAmount?.value)) {
+          result.extractionMethod = 'gemini_multimodal';
+          console.log('[Bill Parser] Gemini Multimodal extraction succeeded.');
         }
       } catch (geminiErr) {
-        console.warn('[Bill Parser] Gemini multimodal extraction failed, using heuristic extraction:', geminiErr.message);
+        console.warn('[Bill Parser] Gemini extraction notice:', geminiErr.message);
       }
     }
 
-    // Step 3: Merge Gemini structured data or fallback to Regex heuristics
-    if (geminiData) {
+    // Step 3: Apply Gemini structured data if available
+    if (geminiData && (geminiData.unitsConsumed?.value || geminiData.totalAmount?.value)) {
       applyGeminiData(result, geminiData);
-    } else if (extractedText) {
-      applyRegexHeuristics(result, extractedText);
+    } else {
+      // Step 4: If Gemini did not yield complete data, fallback to text regex heuristics
+      if (extractedText) {
+        applyRegexHeuristics(result, extractedText);
+      }
+
+      // Step 5: Optional image OCR fallback via Tesseract (strictly capped with a 6-second timeout so it never hangs)
+      if (fileMimeType.startsWith('image/') && Tesseract && (!result.unitsConsumed || !result.totalAmount)) {
+        try {
+          console.log('[Bill Parser] Running quick fallback OCR on image bill (max 6s)...');
+          const ocrPromise = Tesseract.recognize(filePath, 'eng', { logger: () => {} });
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('OCR recognition timed out after 6 seconds')), 6000)
+          );
+          const ocrResult = await Promise.race([ocrPromise, timeoutPromise]);
+          extractedText = ocrResult.data.text || '';
+          result.ocrText = extractedText;
+          if (!result.rawText) result.rawText = extractedText;
+          result.extractionMethod = 'ocr_fallback';
+          applyRegexHeuristics(result, extractedText);
+        } catch (ocrErr) {
+          console.warn('[Bill Parser] Quick OCR skipped/timed out:', ocrErr.message);
+        }
+      }
     }
 
-    // Step 4: Mathematical Cross-Validation
+    // Step 6: Mathematical Cross-Validation
     validateBillRelationships(result);
 
-    // Step 5: Determine Final Verification Status
+    // Step 7: Determine Final Verification Status
     const hasUnits = typeof result.unitsConsumed === 'number' && result.unitsConsumed > 0;
     const hasAmount = typeof result.totalAmount === 'number' && result.totalAmount > 0;
     const highConfidence = (result.fieldConfidence.unitsConsumed >= 0.8) && (result.fieldConfidence.totalAmount >= 0.8);
@@ -160,17 +172,25 @@ async function extractBillData(filePath, fileMimeType) {
 }
 
 /**
- * Calls Gemini 3.8 Flash with Multimodal base64 file and system instructions for structured Indian bill extraction.
+ * Calls Gemini Multimodal Vision with candidate models and resilient timeout.
  */
 async function extractWithGeminiMultimodal(filePath, mimeType, priorText) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-  const modelName = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
+  const candidateModels = [
+    process.env.GEMINI_MODEL,
+    'gemini-3.5-flash-lite',
+    'gemini-3.8-flash',
+    'gemini-flash-latest',
+  ].filter(Boolean);
+
+  // Ensure unique model candidate list
+  const uniqueModels = [...new Set(candidateModels)];
 
   const fileBytes = fs.readFileSync(filePath);
   const base64Data = fileBytes.toString('base64');
 
-  const prompt = `You are a certified Indian DISCOM electricity bill intelligence specialist.
-Analyze this electricity bill document carefully.
+  const prompt = `You are a certified Indian electricity bill intelligence specialist for power utilities (such as MSEDCL/महावितरण, Tata Power, Adani Electricity, BESCOM, Torrent, UPPCL, etc.).
+Analyze this electricity bill document with extreme precision. The bill may contain bilingual text in English, Marathi, Hindi, or Gujarati.
 Return a STRICT JSON object without any Markdown formatting or code fences.
 Do NOT invent any values. If a field is not clearly visible, set value to null and confidence to 0.0.
 
@@ -193,26 +213,42 @@ JSON Structure:
   "meterNumber": { "value": "string or null", "confidence": 0.0 to 1.0 }
 }`;
 
-  const response = await ai.models.generateContent({
-    model: modelName,
-    contents: [
-      {
-        role: 'user',
-        parts: [
-          { inlineData: { mimeType, data: base64Data } },
-          { text: prompt },
-        ],
-      },
-    ],
-    config: {
-      thinkingConfig: { thinkingLevel: 'LOW' },
-      responseMimeType: 'application/json',
-    },
-  });
+  let lastError = null;
 
-  const responseText = response.text ? response.text.trim() : '';
-  const cleanJson = responseText.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
-  return JSON.parse(cleanJson);
+  for (const modelName of uniqueModels) {
+    try {
+      const generatePromise = ai.models.generateContent({
+        model: modelName,
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              { inlineData: { mimeType, data: base64Data } },
+              { text: prompt },
+            ],
+          },
+        ],
+        config: {
+          responseMimeType: 'application/json',
+        },
+      });
+
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`Gemini call to ${modelName} timed out after 18 seconds`)), 18000)
+      );
+
+      const response = await Promise.race([generatePromise, timeoutPromise]);
+      const responseText = response.text ? response.text.trim() : '';
+      const cleanJson = responseText.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
+      const parsed = JSON.parse(cleanJson);
+      if (parsed) return parsed;
+    } catch (err) {
+      lastError = err;
+      console.warn(`[Bill Parser] Model ${modelName} error (${err.message}). Trying fallback model...`);
+    }
+  }
+
+  throw lastError || new Error('All Gemini multimodal models failed');
 }
 
 function applyGeminiData(result, g) {
@@ -297,10 +333,10 @@ function applyGeminiData(result, g) {
 }
 
 function applyRegexHeuristics(result, text) {
-  // Units consumed patterns
+  // Units consumed patterns (English and Marathi/Hindi utility terms)
   const unitsPatterns = [
-    /(?:Units\s*Consumed|Total\s*Units|Billed\s*Units|Consumption|kWh|Units)[\s:\-–]*([0-9]+(?:\.[0-9]+)?)/i,
-    /([0-9]+(?:\.[0-9]+)?)\s*(?:kWh|Units|Unit)\b/i,
+    /(?:Units\s*Consumed|Total\s*Units|Billed\s*Units|Consumption|kWh|Units|वापरलेले\s*युनिट|एकूण\s*युनिट|चालू\s*युनिट|युनिट)[\s:\-–]*([0-9]+(?:\.[0-9]+)?)/i,
+    /([0-9]+(?:\.[0-9]+)?)\s*(?:kWh|Units|Unit|युनिट)\b/i,
   ];
   for (const pattern of unitsPatterns) {
     const match = text.match(pattern);
@@ -314,11 +350,12 @@ function applyRegexHeuristics(result, text) {
     }
   }
 
-  // Total bill patterns
+  // Total bill patterns (English & Marathi/Hindi utility terms)
   const amountPatterns = [
-    /(?:Net\s*Amount\s*Payable|Total\s*Amount|Amount\s*Payable|Current\s*Bill|Total\s*Bill|Bill\s*Amount)[\s:\-–₹Rs.]*([0-9,]+(?:\.[0-9]{2})?)/i,
+    /(?:Net\s*Amount\s*Payable|Total\s*Amount|Amount\s*Payable|Current\s*Bill|Total\s*Bill|Bill\s*Amount|देय\s*रक्कम|रक्कम\s*रु\.?|बिल\s*रक्कम)[\s:\-–₹Rs.]*([0-9,]+(?:\.[0-9]{2})?)/i,
     /₹\s*([0-9,]+(?:\.[0-9]{2})?)/i,
     /Rs\.?\s*([0-9,]+(?:\.[0-9]{2})?)/i,
+    /(?:Amount|रक्कम)\s*[:=]\s*([0-9,]+(?:\.[0-9]{2})?)/i,
   ];
   for (const pattern of amountPatterns) {
     const match = text.match(pattern);
@@ -332,8 +369,25 @@ function applyRegexHeuristics(result, text) {
     }
   }
 
+  // DISCOM detection
+  if (/महावितरण|MSEDCL|mahadiscom/i.test(text)) {
+    result.discom = 'MSEDCL (Maharashtra State Electricity Distribution Co)';
+  } else if (/tata\s*power/i.test(text)) {
+    result.discom = 'Tata Power';
+  } else if (/adani\s*electricity/i.test(text)) {
+    result.discom = 'Adani Electricity';
+  } else if (/bescom/i.test(text)) {
+    result.discom = 'BESCOM (Bangalore Electricity Supply Co)';
+  } else if (/bses/i.test(text)) {
+    result.discom = 'BSES Delhi';
+  } else if (/uppcl/i.test(text)) {
+    result.discom = 'UPPCL (Uttar Pradesh Power Corporation)';
+  } else if (/torrent\s*power/i.test(text)) {
+    result.discom = 'Torrent Power';
+  }
+
   // Consumer Number
-  const consumerMatch = text.match(/(?:Consumer\s*No|Account\s*No|Consumer\s*Number|CA\s*No|K\s*No)[\s:\-–]*([0-9A-Z]{6,16})/i);
+  const consumerMatch = text.match(/(?:Consumer\s*No|Account\s*No|Consumer\s*Number|CA\s*No|K\s*No|ग्राहक\s*क्र(?:मांक)?)[\s:\-–]*([0-9A-Z]{6,16})/i);
   if (consumerMatch && consumerMatch[1]) {
     result.consumerNumber = consumerMatch[1];
   }
@@ -347,11 +401,11 @@ function applyRegexHeuristics(result, text) {
   }
 
   // Consumer Category
-  if (/commercial|LT-II|commercial\s*tariff/i.test(text)) {
+  if (/commercial|LT-II|commercial\s*tariff|व्यावसायिक/i.test(text)) {
     result.consumerCategory = 'Commercial';
-  } else if (/agriculture|agri|farm|irrigation/i.test(text)) {
+  } else if (/agriculture|agri|farm|irrigation|कृषी|शेती/i.test(text)) {
     result.consumerCategory = 'Agricultural';
-  } else if (/industrial|HT/i.test(text)) {
+  } else if (/industrial|HT|औद्योगिक/i.test(text)) {
     result.consumerCategory = 'Industrial';
   } else {
     result.consumerCategory = 'Residential';
