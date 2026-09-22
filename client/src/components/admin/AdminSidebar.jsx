@@ -42,14 +42,14 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
             />
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-light-text text-sm tracking-tight">
+                <span className="font-bold text-light-text text-[17px] tracking-tight">
                   SolarSense
                 </span>
-                <span className="text-[11px] font-bold uppercase px-1.5 py-0.5 rounded-btn bg-brand/10 text-brand border border-brand/20">
+                <span className="text-[14px] font-bold uppercase px-1.5 py-0.5 rounded-btn bg-brand/10 text-brand border border-brand/20">
                   ADMIN
                 </span>
               </div>
-              <p className="text-xs text-light-muted font-normal">Console</p>
+              <p className="text-[15px] text-light-muted font-normal">Console</p>
             </div>
           </div>
           {setMobileOpen && (
@@ -64,15 +64,15 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
 
         {/* Administrator Profile Tag */}
         <div className="mx-1 mb-4 p-3 rounded-card bg-white border border-[#CBD5E1] shadow-xs">
-          <p className="text-xs uppercase font-bold tracking-wider text-brand mb-0.5">
+          <p className="text-[15px] uppercase font-bold tracking-wider text-brand mb-0.5">
             Administrator
           </p>
-          <p className="text-sm font-bold text-light-text truncate">{adminUser?.name || 'Administrator'}</p>
-          <p className="text-xs text-light-muted truncate font-mono mt-0.5">{adminUser?.email || 'admin@solarsense.ai'}</p>
+          <p className="text-[17px] font-bold text-light-text truncate">{adminUser?.name || 'Administrator'}</p>
+          <p className="text-[15px] text-light-muted truncate font-mono mt-0.5">{adminUser?.email || 'admin@solarsense.ai'}</p>
         </div>
 
         {/* Nav Links */}
-        <nav className="space-y-1">
+        <nav className="space-y-1.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -81,14 +81,14 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
                 to={item.path}
                 onClick={() => setMobileOpen && setMobileOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3.5 py-2.5 rounded-btn text-sm font-semibold transition-colors ${
+                  `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[17px] font-semibold transition-all ${
                     isActive
                       ? 'bg-white text-brand font-bold border border-[#CBD5E1] shadow-xs'
                       : 'text-slate-700 hover:text-slate-900 hover:bg-slate-300/50'
                   }`
                 }
               >
-                <Icon className="w-4 h-4 shrink-0" />
+                <Icon className="w-[18px] h-[18px] shrink-0" />
                 <span>{item.name}</span>
               </NavLink>
             );
@@ -100,9 +100,9 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
       <div className="pt-3 border-t border-[#CBD5E1]">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-btn text-sm font-semibold text-rose-600 hover:bg-rose-100/60 transition-colors cursor-pointer"
+          className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-[17px] font-semibold text-rose-600 hover:bg-rose-100/60 transition-colors cursor-pointer"
         >
-          <LogOut className="w-4 h-4" />
+          <LogOut className="w-[18px] h-[18px]" />
           <span>Exit Admin Portal</span>
         </button>
       </div>

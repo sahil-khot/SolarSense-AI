@@ -112,8 +112,8 @@ const RegisterPage = () => {
           });
         }
       } catch (err) {
-        // If server error on check, just keep format valid
-        setUsernameStatus({ state: 'idle', message: '' });
+        // If server error on check, allow proceeding with valid format
+        setUsernameStatus({ state: 'valid', message: '' });
       }
     }, 450);
 
@@ -151,7 +151,8 @@ const RegisterPage = () => {
           });
         }
       } catch (err) {
-        setEmailStatus({ state: 'idle', message: '' });
+        // If server error on check, allow proceeding with valid format
+        setEmailStatus({ state: 'valid', message: '' });
       }
     }, 450);
 
@@ -247,10 +248,23 @@ const RegisterPage = () => {
     setServerErrors({ general: errorMsg });
   };
 
-  // Form submit enabled only when required fields pass validation
+  // Live validation validity checks
+  const isUsernameValid =
+    username.trim().length >= 3 &&
+    username.trim().length <= 30 &&
+    USERNAME_REGEX.test(username.trim()) &&
+    usernameStatus.state !== 'invalid' &&
+    !serverErrors.username;
+
+  const isEmailValid =
+    EMAIL_REGEX.test(email.trim()) &&
+    emailStatus.state !== 'invalid' &&
+    !serverErrors.email;
+
+  // Form submit enabled when required fields pass validation
   const isFormValid =
-    usernameStatus.state === 'valid' &&
-    emailStatus.state === 'valid' &&
+    isUsernameValid &&
+    isEmailValid &&
     isPasswordValid &&
     isConfirmMatch;
 
