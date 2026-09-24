@@ -543,10 +543,12 @@ const companiesData = [
   },
 ];
 
-async function seedCompanies() {
+async function seedCompanies(disconnectOnFinish = false) {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/solarsense_ai');
-    console.log(`[Seed Companies] Connected to DB: ${conn.connection.host}`);
+    if (mongoose.connection.readyState === 0) {
+      const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/solarsense_ai');
+      console.log(`[Seed Companies] Connected to DB: ${conn.connection.host}`);
+    }
 
     await SolarCompany.deleteMany({});
     await CompanyPriceSnapshot.deleteMany({});
@@ -576,11 +578,25 @@ async function seedCompanies() {
     }
 
     console.log('[Seed Companies] Completed successfully!');
-    process.exit(0);
+    if (disconnectOnFinish) {
+      process.exit(0);
+    }
+    return true;
   } catch (err) {
     console.error('[Seed Companies Error]', err);
-    process.exit(1);
+    if (disconnectOnFinish) {
+      process.exit(1);
+    }
+    throw err;
   }
 }
 
-seedCompanies();
+if (require.main === module) {
+  seedCompanies(true);
+}
+
+module.exports = {
+  seedCompanies,
+  companiesData,
+};
+

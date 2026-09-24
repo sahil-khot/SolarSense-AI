@@ -20,15 +20,6 @@ export const authService = {
     return res.data;
   },
 
-  async googleLogin(googleData) {
-    const res = await api.post('/auth/google', googleData);
-    if (res.data.token) {
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-    }
-    return res.data;
-  },
-
   async checkUsername(username) {
     const res = await api.get(`/auth/check-username?username=${encodeURIComponent(username)}`);
     return res.data;

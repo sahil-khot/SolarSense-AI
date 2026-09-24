@@ -7,7 +7,6 @@ const {
   getMe,
   forgotPassword,
   resetPassword,
-  googleAuth,
   checkUsername,
   checkEmail,
 } = require('../controllers/authController');
@@ -17,7 +16,6 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/check-username', checkUsername);
 router.get('/check-email', checkEmail);
-router.post('/google', googleAuth);
 router.post('/admin/login', loginAdmin);
 router.post('/forgot-password', forgotPassword);
 router.put('/reset-password/:resetToken', resetPassword);

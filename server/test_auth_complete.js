@@ -560,29 +560,17 @@ async function runTests() {
   const bcryptMatches = await bcrypt.compare(testUser.password, dbUser.password);
   assert('Bcrypt hash verifies original password correctly', bcryptMatches, 'bcrypt.compare failed');
 
-  console.log('\n--- 5. GOOGLE OAUTH SECURITY & INTEGRATION ---');
+  console.log('\n--- 5. GOOGLE OAUTH REMOVAL VERIFICATION ---');
 
-  // Google endpoint rejects missing credential
+  // Verify /auth/google endpoint is removed and returns 404
   try {
     await axios.post(`${API_BASE}/auth/google`, {});
-    assert('Reject empty Google authentication request', false, 'Expected 400');
+    assert('Google endpoint should be removed (404)', false, 'Expected 404');
   } catch (err) {
     assert(
-      'Reject empty Google authentication request',
-      err.response?.status === 400 && err.response?.data?.message?.toLowerCase().includes('is required'),
-      JSON.stringify(err.response?.data)
-    );
-  }
-
-  // Google endpoint rejects fake/invalid token
-  try {
-    await axios.post(`${API_BASE}/auth/google`, { credential: 'fake_invalid_jwt_token_12345' });
-    assert('Reject invalid Google JWT token', false, 'Expected 401');
-  } catch (err) {
-    assert(
-      'Reject invalid Google JWT token',
-      err.response?.status === 401 && err.response?.data?.message.includes('verification failed'),
-      JSON.stringify(err.response?.data)
+      'Google endpoint successfully removed from backend',
+      err.response?.status === 404,
+      `Status: ${err.response?.status}`
     );
   }
 

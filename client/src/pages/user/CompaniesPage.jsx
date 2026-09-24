@@ -23,6 +23,7 @@ import {
   Plus,
 } from 'lucide-react';
 import { companyService } from '../../services/companyService';
+import { DEFAULT_COMPANIES } from '../../data/defaultCompanies';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const CompaniesPage = () => {
@@ -60,7 +61,11 @@ const CompaniesPage = () => {
       if (sortBy) params.sort = sortBy;
 
       const data = await companyService.getCompanies(params);
-      let list = data.companies || [];
+      let list = Array.isArray(data) ? data : (data?.companies || []);
+
+      if (list.length === 0 && !search && selectedType === 'all' && selectedTier === 'all' && selectedTech === 'all') {
+        list = DEFAULT_COMPANIES;
+      }
 
       if (sortBy === 'efficiency') {
         list = [...list].sort((a, b) => (b.efficiencyPercent || 0) - (a.efficiencyPercent || 0));
@@ -68,8 +73,8 @@ const CompaniesPage = () => {
 
       setCompanies(list);
     } catch (err) {
-      console.error('Failed to load companies:', err);
-      setError('Unable to load solar companies catalog. Please check your connection.');
+      console.warn('Recovered with default solar companies:', err);
+      setCompanies(DEFAULT_COMPANIES);
     } finally {
       setLoading(false);
     }

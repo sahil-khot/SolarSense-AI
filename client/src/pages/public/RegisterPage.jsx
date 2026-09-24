@@ -15,7 +15,6 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { authService } from '../../services/authService';
 import Logo from '../../components/common/Logo';
-import GoogleAuthButton from '../../components/common/GoogleAuthButton';
 
 const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,30}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -34,9 +33,8 @@ const RegisterPage = () => {
   const [serverErrors, setServerErrors] = useState({}); // { username, email, password, general }
 
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
 
-  const { register, googleLogin } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   // Debounce timers for live availability checks
@@ -226,28 +224,6 @@ const RegisterPage = () => {
     }
   };
 
-  const handleGoogleSuccess = async (credential) => {
-    try {
-      setGoogleLoading(true);
-      setServerErrors({});
-      await googleLogin({ credential });
-      navigate('/dashboard', { replace: true });
-    } catch (err) {
-      setServerErrors({
-        general:
-          err.response?.data?.message ||
-          err.message ||
-          'Google authentication failed. Please try again.',
-      });
-    } finally {
-      setGoogleLoading(false);
-    }
-  };
-
-  const handleGoogleError = (errorMsg) => {
-    setServerErrors({ general: errorMsg });
-  };
-
   // Live validation validity checks
   const isUsernameValid =
     username.trim().length >= 3 &&
@@ -293,31 +269,6 @@ const RegisterPage = () => {
               <span>{serverErrors.general}</span>
             </div>
           )}
-
-          {/* Real Google OAuth Button */}
-          <div>
-            <GoogleAuthButton
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-              text="signup_with"
-              disabled={loading || googleLoading}
-            />
-            {googleLoading && (
-              <div className="flex items-center justify-center gap-2 mt-2 text-xs font-semibold text-blue-600">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                <span>Verifying Google account securely...</span>
-              </div>
-            )}
-          </div>
-
-          {/* Divider */}
-          <div className="flex items-center gap-3 pt-1">
-            <div className="flex-1 h-px bg-slate-200" />
-            <span className="text-[13px] text-slate-500 uppercase font-bold tracking-wider">
-              or register with email
-            </span>
-            <div className="flex-1 h-px bg-slate-200" />
-          </div>
 
           {/* Registration Form */}
           <form onSubmit={handleSubmit} noValidate className="space-y-4.5">

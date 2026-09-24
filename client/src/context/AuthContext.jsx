@@ -45,13 +45,6 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  const googleLogin = async (googleData) => {
-    const data = await authService.googleLogin(googleData);
-    setUser(data.user);
-    setToken(data.token);
-    return data;
-  };
-
   const logout = () => {
     authService.logout();
     setUser(null);
@@ -72,7 +65,6 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         register,
-        googleLogin,
         logout,
         updateUser,
       }}

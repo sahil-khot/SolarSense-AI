@@ -303,7 +303,11 @@ const seed = async () => {
     await SystemSetting.create(s);
   }
 
-  console.log('[Seed] Database seeded successfully with Admin, Demo Accounts, and Settings!');
+  console.log('[Seed] Seeding Solar Companies Catalog...');
+  const { seedCompanies } = require('./seedCompanies');
+  await seedCompanies(false);
+
+  console.log('[Seed] Database seeded successfully with Admin, Demo Accounts, Settings, and Solar Companies!');
   process.exit(0);
 };
 

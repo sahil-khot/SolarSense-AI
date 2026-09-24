@@ -11,7 +11,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import Logo from '../../components/common/Logo';
-import GoogleAuthButton from '../../components/common/GoogleAuthButton';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,30}$/;
@@ -23,9 +22,8 @@ const LoginPage = () => {
   const [fieldErrors, setFieldErrors] = useState({});
   const [generalError, setGeneralError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
 
-  const { login, googleLogin } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -89,28 +87,6 @@ const LoginPage = () => {
     }
   };
 
-  const handleGoogleSuccess = async (credential) => {
-    try {
-      setGoogleLoading(true);
-      setGeneralError('');
-      setFieldErrors({});
-      await googleLogin({ credential });
-      navigate(from, { replace: true });
-    } catch (err) {
-      setGeneralError(
-        err.response?.data?.message ||
-          err.message ||
-          'Google authentication failed. Please try again.'
-      );
-    } finally {
-      setGoogleLoading(false);
-    }
-  };
-
-  const handleGoogleError = (errorMsg) => {
-    setGeneralError(errorMsg);
-  };
-
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12 bg-[#F8FAFC]">
       <div className="w-full max-w-[480px] space-y-6">
@@ -136,31 +112,6 @@ const LoginPage = () => {
               <span>{generalError}</span>
             </div>
           )}
-
-          {/* Real Google OAuth Button */}
-          <div>
-            <GoogleAuthButton
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-              text="signin_with"
-              disabled={loading || googleLoading}
-            />
-            {googleLoading && (
-              <div className="flex items-center justify-center gap-2 mt-2 text-xs font-semibold text-blue-600">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                <span>Verifying Google account securely...</span>
-              </div>
-            )}
-          </div>
-
-          {/* Divider */}
-          <div className="flex items-center gap-3 pt-1">
-            <div className="flex-1 h-px bg-slate-200" />
-            <span className="text-[13px] text-slate-500 uppercase font-bold tracking-wider">
-              or log in with credentials
-            </span>
-            <div className="flex-1 h-px bg-slate-200" />
-          </div>
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} noValidate className="space-y-4.5">

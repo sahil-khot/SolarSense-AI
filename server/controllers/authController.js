@@ -1,8 +1,6 @@
 const crypto = require('crypto');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const { OAuth2Client } = require('google-auth-library');
-const axios = require('axios');
 
 // Helper to get JWT Secret securely
 const getJwtSecret = () => {
@@ -549,133 +547,6 @@ const resetPassword = async (req, res) => {
   }
 };
 
-// @desc    Authenticate or register user via Real Google OAuth 2.0
-// @route   POST /api/auth/google
-// @access  Public
-const googleAuth = async (req, res) => {
-  try {
-    const { credential, idToken } = req.body;
-    const tokenToVerify = credential || idToken;
-
-    if (!tokenToVerify) {
-      return res.status(400).json({
-        success: false,
-        message: 'Google authentication credential (ID token) is required.',
-      });
-    }
-
-    let verifiedPayload = null;
-    const clientId = process.env.GOOGLE_CLIENT_ID;
-
-    // 1. Verify Google ID token using google-auth-library
-    try {
-      const client = new OAuth2Client(clientId);
-      const ticket = await client.verifyIdToken({
-        idToken: tokenToVerify,
-        audience: clientId || undefined,
-      });
-      verifiedPayload = ticket.getPayload();
-    } catch (verifyErr) {
-      // Fallback verification via Google's tokeninfo endpoint
-      try {
-        const tokenInfoRes = await axios.get(`https://oauth2.googleapis.com/tokeninfo?id_token=${tokenToVerify}`);
-        if (tokenInfoRes.data && tokenInfoRes.data.email) {
-          verifiedPayload = tokenInfoRes.data;
-        }
-      } catch (tokenInfoErr) {
-        console.error('Google token verification failed completely:', verifyErr.message, tokenInfoErr.message);
-        return res.status(401).json({
-          success: false,
-          message: 'Google authentication verification failed. Invalid or expired token.',
-        });
-      }
-    }
-
-    if (!verifiedPayload || !verifiedPayload.email) {
-      return res.status(401).json({
-        success: false,
-        message: 'Google token could not be verified by Google servers.',
-      });
-    }
-
-    const googleEmail = verifiedPayload.email.toLowerCase().trim();
-    const googleSub = verifiedPayload.sub;
-    const googleName = verifiedPayload.name || googleEmail.split('@')[0];
-    const googleAvatar = verifiedPayload.picture || '';
-
-    // 2. Find or link user
-    let user = await User.findOne({
-      $or: [{ googleId: googleSub }, { email: googleEmail }],
-    });
-
-    if (!user) {
-      // Create new account from verified Google profile
-      let base = (verifiedPayload.given_name || googleName || googleEmail.split('@')[0])
-        .toLowerCase()
-        .replace(/[^a-z0-9_]/g, '_')
-        .replace(/_+/g, '_')
-        .replace(/^_|_$/g, '');
-      if (base.length < 3) base = `user_${base}`;
-      if (base.length > 25) base = base.substring(0, 25);
-
-      let candidateUsername = base;
-      let counter = 1;
-      while (await User.findOne({ username: candidateUsername })) {
-        candidateUsername = `${base}_${counter}`;
-        counter++;
-      }
-
-      user = await User.create({
-        username: candidateUsername,
-        name: googleName,
-        email: googleEmail,
-        googleId: googleSub,
-        authProvider: 'google',
-        avatar: googleAvatar,
-        userType: 'residential',
-        role: 'user',
-        location: { state: 'Maharashtra', city: 'Pune' },
-      });
-    } else {
-      // Link Google ID if existing email user
-      if (!user.googleId) {
-        user.googleId = googleSub;
-      }
-      if (googleAvatar && !user.avatar) {
-        user.avatar = googleAvatar;
-      }
-      await user.save();
-    }
-
-    const token = generateToken(user._id, user.role);
-
-    res.json({
-      success: true,
-      message: 'Signed in with Google successfully.',
-      token,
-      user: {
-        id: user._id,
-        username: user.username,
-        name: user.name,
-        email: user.email,
-        phone: user.phone || '',
-        location: user.location,
-        userType: user.userType,
-        role: user.role,
-        avatar: user.avatar || '',
-        authProvider: user.authProvider,
-        createdAt: user.createdAt,
-      },
-    });
-  } catch (error) {
-    console.error('Google auth error:', error);
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Server error during Google authentication.',
-    });
-  }
-};
-
 module.exports = {
   registerUser,
   checkUsername,
@@ -685,5 +556,4 @@ module.exports = {
   getMe,
   forgotPassword,
   resetPassword,
-  googleAuth,
 };

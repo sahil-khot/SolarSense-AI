@@ -19,8 +19,22 @@ if (!process.env.JWT_SECRET) {
   }
 }
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB and ensure essential catalog data is present
+connectDB().then(async () => {
+  try {
+    const SolarCompany = require('./models/SolarCompany');
+    const count = await SolarCompany.countDocuments();
+    if (count === 0) {
+      console.log('[Auto-Seed] Initializing solar companies directory...');
+      const { seedCompanies } = require('./seed/seedCompanies');
+      await seedCompanies(false);
+    }
+  } catch (err) {
+    console.warn('[Auto-Seed] Note on company seeding:', err.message);
+  }
+}).catch((err) => {
+  console.error('[Database Startup Error]', err.message);
+});
 
 // Security HTTP Headers
 app.use(helmet({
