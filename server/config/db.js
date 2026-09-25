@@ -1,39 +1,50 @@
 const mongoose = require('mongoose');
 
+const ATLAS_URI =
+  'mongodb+srv://sahilkhot1152005_db_user:SolarSense2026@solarsenseai.avju7tr.mongodb.net/solarsense_ai?retryWrites=true&w=majority&appName=SolarSenseAI';
+
+let cachedConnection = null;
+
 const connectDB = async () => {
-  // Reuse existing connection if available (critical for serverless / Vercel)
+  // Reuse existing connection if active
   if (mongoose.connection.readyState >= 1) {
     return mongoose.connection;
   }
 
-  const primaryUri = process.env.MONGODB_URI;
-  const localUri = 'mongodb://127.0.0.1:27017/solarsense_ai';
+  if (cachedConnection) {
+    return cachedConnection;
+  }
+
+  const primaryUri = process.env.MONGODB_URI || ATLAS_URI;
 
   try {
-    const conn = await mongoose.connect(primaryUri || localUri, {
-      serverSelectionTimeoutMS: 5000,
+    const conn = await mongoose.connect(primaryUri, {
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
     });
+    cachedConnection = conn;
     console.log(`[Database] MongoDB Connected: ${conn.connection.host} / ${conn.connection.name}`);
     return conn;
   } catch (error) {
-    console.error(`[Database Error] Primary connection failed: ${error.message}`);
-    if (primaryUri && !primaryUri.includes('127.0.0.1') && !primaryUri.includes('localhost') && !process.env.VERCEL) {
-      console.log('[Database] Attempting fallback to local MongoDB (mongodb://127.0.0.1:27017/solarsense_ai)...');
+    console.error(`[Database Error] Primary MongoDB connection failed: ${error.message}`);
+
+    // If primaryUri failed and wasn't the Atlas URI, try Atlas URI as fallback
+    if (primaryUri !== ATLAS_URI) {
       try {
-        const localConn = await mongoose.connect(localUri, {
-          serverSelectionTimeoutMS: 4000,
+        console.log('[Database] Connecting to fallback MongoDB Atlas...');
+        const fallbackConn = await mongoose.connect(ATLAS_URI, {
+          serverSelectionTimeoutMS: 10000,
+          connectTimeoutMS: 10000,
         });
-        console.log(`[Database] Fallback MongoDB Connected: ${localConn.connection.host} / ${localConn.connection.name}`);
-        return localConn;
-      } catch (localErr) {
-        console.error(`[Database Error] Local MongoDB fallback also failed: ${localErr.message}`);
+        cachedConnection = fallbackConn;
+        console.log(`[Database] Connected to fallback MongoDB Atlas: ${fallbackConn.connection.host}`);
+        return fallbackConn;
+      } catch (fallbackErr) {
+        console.error(`[Database Error] Fallback Atlas connection also failed: ${fallbackErr.message}`);
       }
     }
-    if (!process.env.VERCEL) {
-      process.exit(1);
-    } else {
-      throw error;
-    }
+
+    throw error;
   }
 };
 

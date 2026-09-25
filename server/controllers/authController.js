@@ -4,11 +4,7 @@ const jwt = require('jsonwebtoken');
 
 // Helper to get JWT Secret securely
 const getJwtSecret = () => {
-  const secret = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'solarsense_jwt_secret');
-  if (!secret) {
-    throw new Error('JWT_SECRET environment variable is missing.');
-  }
-  return secret;
+  return process.env.JWT_SECRET || 'solarsense_super_secret_jwt_key_2026_btech_project';
 };
 
 // Helper to generate signed JWT token
@@ -352,7 +348,7 @@ const loginUser = async (req, res) => {
     console.error('Login error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error during authentication.',
+      message: error.message || 'Server error during authentication.',
     });
   }
 };
@@ -446,7 +442,7 @@ const loginAdmin = async (req, res) => {
     console.error('Admin login error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error during admin authentication.',
+      message: error.message || 'Server error during admin authentication.',
     });
   }
 };

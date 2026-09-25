@@ -2,11 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const getJwtSecret = () => {
-  const secret = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'solarsense_jwt_secret');
-  if (!secret) {
-    throw new Error('JWT_SECRET environment variable is missing.');
-  }
-  return secret;
+  return process.env.JWT_SECRET || 'solarsense_super_secret_jwt_key_2026_btech_project';
 };
 
 const protect = async (req, res, next) => {
