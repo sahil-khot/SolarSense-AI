@@ -17,6 +17,15 @@ export const AdminAuthProvider = ({ children }) => {
     return data;
   };
 
+  const setAdminSession = (user, token) => {
+    if (user && token && user.role === 'admin') {
+      localStorage.setItem('adminToken', token);
+      localStorage.setItem('adminUser', JSON.stringify(user));
+      setAdminUser(user);
+      setAdminToken(token);
+    }
+  };
+
   const adminLogout = () => {
     authService.adminLogout();
     setAdminUser(null);
@@ -31,6 +40,7 @@ export const AdminAuthProvider = ({ children }) => {
         isAdminAuthenticated: !!adminToken && !!adminUser && adminUser.role === 'admin',
         adminLogin,
         adminLogout,
+        setAdminSession,
       }}
     >
       {children}

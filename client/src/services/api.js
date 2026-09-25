@@ -30,7 +30,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor: uniform error extraction
+// Response interceptor: uniform error extraction while preserving response data
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -40,7 +40,8 @@ api.interceptors.response.use(
     } else if (!message) {
       message = 'An unexpected network error occurred. Please check your connection.';
     }
-    return Promise.reject(new Error(message));
+    error.message = message;
+    return Promise.reject(error);
   }
 );
 

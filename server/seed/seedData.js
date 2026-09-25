@@ -31,6 +31,7 @@ const seed = async () => {
 
   console.log('[Seed] Creating default Admin...');
   const admin = await User.create({
+    username: 'admin',
     name: 'SolarSense System Admin',
     email: 'admin@solarsense.ai',
     password: 'Admin@12345',
@@ -39,11 +40,12 @@ const seed = async () => {
     userType: 'residential',
     role: 'admin',
   });
-  console.log(` -> Admin created: ${admin.email} (Password: Admin@12345)`);
+  console.log(` -> Admin created: ${admin.email} (Username: admin, Password: Admin@12345)`);
 
   console.log('[Seed] Creating categorized Demo Users...');
   const demoUsersData = [
     {
+      username: 'rahul_sharma',
       name: 'Rahul Sharma',
       email: 'rahul.residential@solarsense.ai',
       password: 'User@12345',
@@ -56,6 +58,7 @@ const seed = async () => {
       tariff: 7.5,
     },
     {
+      username: 'ramesh_patil',
       name: 'Ramesh Patil (Kisan Green Farms)',
       email: 'ramesh.farm@solarsense.ai',
       password: 'User@12345',
@@ -68,6 +71,7 @@ const seed = async () => {
       tariff: 4.0,
     },
     {
+      username: 'priya_verma',
       name: 'Priya Verma (Urban Cafe & Bakery)',
       email: 'priya.business@solarsense.ai',
       password: 'User@12345',
@@ -80,6 +84,7 @@ const seed = async () => {
       tariff: 9.5,
     },
     {
+      username: 'arjun_singhania',
       name: 'Arjun Singhania (Apex Industrial Textiles)',
       email: 'arjun.commercial@solarsense.ai',
       password: 'User@12345',
@@ -95,6 +100,7 @@ const seed = async () => {
 
   for (const item of demoUsersData) {
     const user = await User.create({
+      username: item.username,
       name: item.name,
       email: item.email,
       password: item.password,

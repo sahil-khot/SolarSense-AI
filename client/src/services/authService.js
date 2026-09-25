@@ -16,6 +16,11 @@ export const authService = {
     if (res.data.token) {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
+      // If logging in as admin, also initialize admin session
+      if (res.data.user?.role === 'admin') {
+        localStorage.setItem('adminToken', res.data.token);
+        localStorage.setItem('adminUser', JSON.stringify(res.data.user));
+      }
     }
     return res.data;
   },
@@ -45,6 +50,10 @@ export const authService = {
     if (res.data.token) {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
+      if (res.data.user?.role === 'admin') {
+        localStorage.setItem('adminToken', res.data.token);
+        localStorage.setItem('adminUser', JSON.stringify(res.data.user));
+      }
     }
     return res.data;
   },
@@ -52,6 +61,8 @@ export const authService = {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
   },
 
   // Admin Authentication (Strictly isolated storage keys)
@@ -60,6 +71,9 @@ export const authService = {
     if (res.data.token) {
       localStorage.setItem('adminToken', res.data.token);
       localStorage.setItem('adminUser', JSON.stringify(res.data.user));
+      // Also provide standard user session so shared utilities work seamlessly
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
     }
     return res.data;
   },
